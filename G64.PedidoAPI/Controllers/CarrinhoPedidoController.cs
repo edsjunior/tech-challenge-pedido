@@ -17,9 +17,9 @@ namespace G64.PedidoAPI.Controllers
 		}
 
 		[HttpGet("getCart/{id}")]
-		public async Task<ActionResult<CarrinhoPedidoDTO>> GetByUserId(string id)
+		public async Task<ActionResult<CarrinhoPedidoDTO>> GetById(Guid id)
 		{
-			var carrinhoPedidoDTO = await _repository.GetCarrinhoPedidoByUserIdAsync(id);
+			var carrinhoPedidoDTO = await _repository.GetCarrinhoPedidoById(id);
 
 			if(carrinhoPedidoDTO is null)
 				return NotFound();
@@ -30,7 +30,7 @@ namespace G64.PedidoAPI.Controllers
 		[HttpPost("addpedido")]
 		public async Task<ActionResult<CarrinhoPedidoDTO>> AddPedido(CarrinhoPedidoDTO carrinhoPedidoDTO)
 		{
-			var carrinhoPedido = await _repository.UpdateCartAsync(carrinhoPedidoDTO);
+			var carrinhoPedido = await _repository.UpdateCarrinhoPedidoAsync(carrinhoPedidoDTO);
 
             if (carrinhoPedido is null)
                 return NotFound();
@@ -42,9 +42,9 @@ namespace G64.PedidoAPI.Controllers
         [HttpPut("updatepedido")]
         public async Task<ActionResult<CarrinhoPedidoDTO>> UpdatePedido(CarrinhoPedidoDTO carrinhoPedidoDTO)
         {
-            var carrinhoPedido = await _repository.UpdateCartAsync(carrinhoPedidoDTO);
+            var carrinhoPedido = await _repository.UpdateCarrinhoPedidoAsync(carrinhoPedidoDTO);
 
-            if (carrinhoPedido is null)
+            if (carrinhoPedido == null)
                 return NotFound();
 
             return Ok(carrinhoPedido);

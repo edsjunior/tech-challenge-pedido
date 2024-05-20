@@ -6,10 +6,7 @@
         public int Quantidade { get; set; }
         public Guid ProdutoId { get; set; }
         public Guid HeaderPedidoId { get; set; }
-
         public Produto Produto { get; set; } = new Produto();
-
-        public HeaderPedido HeaderPedido { get; set; } = new HeaderPedido();
     }
 
     

@@ -17,9 +17,9 @@ public class CarrinhoPedidoRepository : ICarrinhoPedidoRepository
         _mapper = mapper;
     }
 
-    public async Task<bool> CleanCarrinhoPedidoAsync(string userId)
+	public async Task<bool> CleanCarrinhoPedidoAsync(Guid Id)
     {
-        var headerPedido = await _context.HeaderPedidos.FirstOrDefaultAsync(c => c.UserId == userId);
+        var headerPedido = await _context.HeaderPedidos.FirstOrDefaultAsync(c => c.Id == Id);
 
         if (headerPedido is not null)
         {
@@ -73,7 +73,7 @@ public class CarrinhoPedidoRepository : ICarrinhoPedidoRepository
         }
     }
 
-    public async Task<CarrinhoPedidoDTO> UpdateCartAsync(CarrinhoPedidoDTO carrinhoPedidoDto)
+    public async Task<CarrinhoPedidoDTO> UpdateCarrinhoPedidoAsync(CarrinhoPedidoDTO carrinhoPedidoDto)
     {
         CarrinhoPedido carrinhoPedido = _mapper.Map<CarrinhoPedido>(carrinhoPedidoDto);
 
@@ -149,14 +149,22 @@ public class CarrinhoPedidoRepository : ICarrinhoPedidoRepository
     }
 
 
-    public async Task<CarrinhoPedidoDTO> GetAll()
+    public async Task<IEnumerable<CarrinhoPedidoDTO>> GetAll()
     {
-        throw new NotImplementedException();
+        return await _context.CarrinhoPedido.ToListAsync();
     }
 
-    public Task<CarrinhoPedidoDTO> GetCartById(Guid Id)
+    public async Task<CarrinhoPedidoDTO> GetCarrinhoPedidoById(Guid Id)
     {
-        throw new NotImplementedException();
+        CarrinhoPedido carrinhoPedido = new()
+        {
+            HeaderPedido = await _context.HeaderPedidos.FirstOrDefaultAsync(c => c.Id == Id)
+        };
+
+        carrinhoPedido.ItemPedidos = _context.ItemPedidos.Where(c => c.HeaderPedidoId == carrinhoPedido.HeaderPedido.Id)
+            .Include(c => c.Produto);
+
+        return _mapper.Map<CarrinhoPedidoDTO>(carrinhoPedido);
     }
 
 
