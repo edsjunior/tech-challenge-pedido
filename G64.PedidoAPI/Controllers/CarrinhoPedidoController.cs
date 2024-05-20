@@ -67,5 +67,17 @@ namespace G64.PedidoAPI.Controllers
 			}
 			return NoContent();
 		}
+
+		[HttpPut("{id}/status")]
+		public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] PedidoStatus status)
+		{
+			var updatedPedido = await _service.UpdatePedidoStatusAsync(id, status);
+			if (updatedPedido == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(updatedPedido);
+		}
 	}
 }

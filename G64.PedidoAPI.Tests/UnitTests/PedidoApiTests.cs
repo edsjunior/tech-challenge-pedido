@@ -5,7 +5,15 @@ using G64.PedidoAPI.Models;
 using G64.PedidoAPI.Repositories;
 using G64.PedidoAPI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using Moq;
+using Xunit;
+using System.Text.Json;
+using Moq.Protected;
+
 namespace G64.PedidoAPI.Tests.UnitTests;
 
 public class PedidoApiTests
@@ -15,7 +23,13 @@ public class PedidoApiTests
     private readonly IMapper _mapper;
     private readonly PedidoService _pedidoService;
 
-    public PedidoApiTests()
+	private readonly Mock<ICarrinhoPedidoRepository> _repositoryMock;
+	private readonly Mock<IMapper> _mapperMock;
+	private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock;
+	private readonly IConfiguration _configuration;
+	private readonly PagamentoClient _pagamentoClient;
+	
+	public PedidoApiTests()
     {
         var services = new ServiceCollection();
         services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("TestDb"));
@@ -32,8 +46,22 @@ public class PedidoApiTests
         _serviceProvider = services.BuildServiceProvider();
         _context = _serviceProvider.GetRequiredService<AppDbContext>();
         _mapper = _serviceProvider.GetRequiredService<IMapper>();
-        _pedidoService = _serviceProvider.GetRequiredService<PedidoService>();
-    }
+        //_pedidoService = _serviceProvider.GetRequiredService<PedidoService>();
+
+		_repositoryMock = new Mock<ICarrinhoPedidoRepository>();
+		_mapperMock = new Mock<IMapper>();
+		_httpMessageHandlerMock = new Mock<HttpMessageHandler>();
+		_pedidoService = new PedidoService(_repositoryMock.Object, _mapperMock.Object, _pagamentoClient);
+
+
+		var httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+		_configuration = new ConfigurationBuilder().AddInMemoryCollection(new[]
+		{
+				new KeyValuePair<string, string>("ApiGateway:BaseUrl", "http://localhost:5002")
+			}).Build();
+
+		_pagamentoClient = new PagamentoClient(httpClient, _configuration);
+	}
 
     private void ClearDatabase()
     {
@@ -177,6 +205,72 @@ public class PedidoApiTests
 		Assert.True(result);
 		Assert.Null(deletedPedido);
 		ClearDatabase();
+	}
+
+	[Fact]
+	public async Task UpdatePedidoStatusAsync_ShouldUpdateStatusToProcessando_WhenPaymentIsSuccessful()
+	{
+		// Arrange
+		var pedidoId = Guid.NewGuid();
+		var pedido = new Pedido { Id = pedidoId, Status = PedidoStatus.PENDENTE };
+		_repositoryMock.Setup(r => r.GetByIdAsync(pedidoId)).ReturnsAsync(pedido);
+
+		var pagamentoResponse = new PagamentoResponseDTO { IsSuccess = true };
+		var httpResponseMessage = new HttpResponseMessage
+		{
+			StatusCode = System.Net.HttpStatusCode.OK,
+			Content = new StringContent(JsonSerializer.Serialize(pagamentoResponse))
+		};
+
+		_httpMessageHandlerMock
+			.Protected()
+			.Setup<Task<HttpResponseMessage>>(
+				"SendAsync",
+				ItExpr.IsAny<HttpRequestMessage>(),
+				ItExpr.IsAny<CancellationToken>()
+			)
+			.ReturnsAsync(httpResponseMessage);
+
+		// Act
+		var result = await _pedidoService.UpdatePedidoStatusAsync(pedidoId, PedidoStatus.PENDENTE);
+
+		// Assert
+		Assert.NotNull(result);
+		Assert.Equal(PedidoStatus.PROCESSANDO, result.Status);
+		_repositoryMock.Verify(r => r.UpdateAsync(It.Is<Pedido>(p => p.Status == PedidoStatus.PROCESSANDO)), Times.Once);
+	}
+
+	[Fact]
+	public async Task UpdatePedidoStatusAsync_ShouldUpdateStatusToCancelado_WhenPaymentFails()
+	{
+		// Arrange
+		var pedidoId = Guid.NewGuid();
+		var pedido = new Pedido { Id = pedidoId, Status = PedidoStatus.PENDENTE };
+		_repositoryMock.Setup(r => r.GetByIdAsync(pedidoId)).ReturnsAsync(pedido);
+
+		var pagamentoResponse = new PagamentoResponseDTO { IsSuccess = false };
+		var httpResponseMessage = new HttpResponseMessage
+		{
+			StatusCode = System.Net.HttpStatusCode.BadRequest,
+			Content = new StringContent(JsonSerializer.Serialize(pagamentoResponse))
+		};
+
+		_httpMessageHandlerMock
+			.Protected()
+			.Setup<Task<HttpResponseMessage>>(
+				"SendAsync",
+				ItExpr.IsAny<HttpRequestMessage>(),
+				ItExpr.IsAny<CancellationToken>()
+			)
+			.ReturnsAsync(httpResponseMessage);
+
+		// Act
+		var result = await _pedidoService.UpdatePedidoStatusAsync(pedidoId, PedidoStatus.PENDENTE);
+
+		// Assert
+		Assert.NotNull(result);
+		Assert.Equal(PedidoStatus.CANCELADO, result.Status);
+		_repositoryMock.Verify(r => r.UpdateAsync(It.Is<Pedido>(p => p.Status == PedidoStatus.CANCELADO)), Times.Once);
 	}
 
 
