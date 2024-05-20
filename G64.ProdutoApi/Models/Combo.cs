@@ -4,7 +4,7 @@ public class Combo
 {
     public Guid Id { get; set; }
 
-    public ICollection<Produto>? Produtos { get; set; }
+    public ICollection<Produto>? Produtos { get; set; } = new List<Produto>();
 
     /*public Combo(Guid id, ICollection<Produto> produtos)
     {
