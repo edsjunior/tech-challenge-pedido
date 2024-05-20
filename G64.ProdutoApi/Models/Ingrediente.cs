@@ -2,15 +2,16 @@
 
 public class Ingrediente
 {
-    public Guid Id { get; private set; }
-    public string Descricao { get; private set; }
-
-    private Ingrediente(Guid id, string descricao)
+    public Guid Id { get; set; }
+    public string? Descricao { get;  set; }
+    
+    /*
+	public Ingrediente(Guid id, string descricao)
     {
         Id = id;
         Descricao = descricao;
     }
-
+    
     public static Ingrediente CriaIngrediente(Guid id, string descricao)
     {
         ValidaDescricao(descricao);
@@ -23,6 +24,6 @@ public class Ingrediente
         {
             throw new ArgumentException("Descricao deve estar preenchida");
         }
-    }
-
+    }*/
+    
 }
