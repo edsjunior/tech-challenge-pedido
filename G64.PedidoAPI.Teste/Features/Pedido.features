@@ -1,9 +1,0 @@
-﻿Funcionalidade: Gestão de Pedidos
-  Para gerenciar pedidos
-  Como um consumidor da API
-  Eu quero poder criar, ler, atualizar e deletar pedidos
-
-Cenário: Criar um novo pedido
-  Dado que eu tenho um novo pedido
-  Quando eu criar o pedido
-  Então o pedido deve ser criado com sucesso
