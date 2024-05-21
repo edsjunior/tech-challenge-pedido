@@ -5,11 +5,11 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "G64.ProdutoApi", "G64.ProdutoApi\G64.ProdutoApi.csproj", "{FF5F2B95-DF38-4E46-A18F-FFAB75159914}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G64.PedidoAPI", "G64.PedidoAPI\G64.PedidoAPI.csproj", "{25305C5A-2E81-431D-96BF-0C97AF4A1FE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "G64.PedidoAPI", "G64.PedidoAPI\G64.PedidoAPI.csproj", "{25305C5A-2E81-431D-96BF-0C97AF4A1FE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "G64.PedidoAPI.Tests", "G64.PedidoAPI.Tests\G64.PedidoAPI.Tests.csproj", "{CC4441BF-30CF-4C1B-B7A9-6EE44D23329C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{228C3FC5-CB20-4B2C-928D-E43267923035}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{228C3FC5-CB20-4B2C-928D-E43267923035}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
