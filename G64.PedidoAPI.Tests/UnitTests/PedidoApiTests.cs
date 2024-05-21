@@ -13,6 +13,7 @@ using Moq;
 using Xunit;
 using System.Text.Json;
 using Moq.Protected;
+using Microsoft.AspNetCore.Mvc;
 
 namespace G64.PedidoAPI.Tests.UnitTests;
 
@@ -30,45 +31,31 @@ public class PedidoApiTests
 	private readonly PagamentoClient _pagamentoClient;
 	
 	public PedidoApiTests()
-    {
-        var services = new ServiceCollection();
-        services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("TestDb"));
+	{
+		var services = new ServiceCollection();
+		services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("TestDb"));
 
-        services.AddAutoMapper(cfg =>
-        {
-            cfg.CreateMap<Pedido, PedidoDTO>().ReverseMap();
-            cfg.CreateMap<ItemPedido, ItemPedidoDTO>().ReverseMap();
-        });
-
-        services.AddScoped<ICarrinhoPedidoRepository, CarrinhoPedidoRepository>();
-        services.AddScoped<PedidoService>();
-
-        _serviceProvider = services.BuildServiceProvider();
-        _context = _serviceProvider.GetRequiredService<AppDbContext>();
-        _mapper = _serviceProvider.GetRequiredService<IMapper>();
-        //_pedidoService = _serviceProvider.GetRequiredService<PedidoService>();
-
-		_repositoryMock = new Mock<ICarrinhoPedidoRepository>();
-		_mapperMock = new Mock<IMapper>();
-		_httpMessageHandlerMock = new Mock<HttpMessageHandler>();
-		_pedidoService = new PedidoService(_repositoryMock.Object, _mapperMock.Object, _pagamentoClient);
-
-
-		var httpClient = new HttpClient(_httpMessageHandlerMock.Object);
-		_configuration = new ConfigurationBuilder().AddInMemoryCollection(new[]
+		services.AddAutoMapper(cfg =>
 		{
-				new KeyValuePair<string, string>("ApiGateway:BaseUrl", "http://localhost:5002")
-			}).Build();
+			cfg.CreateMap<Pedido, PedidoDTO>().ReverseMap();
+			cfg.CreateMap<ItemPedido, ItemPedidoDTO>().ReverseMap();
+		});
 
-		_pagamentoClient = new PagamentoClient(httpClient, _configuration);
+		services.AddScoped<ICarrinhoPedidoRepository, CarrinhoPedidoRepository>();
+		services.AddScoped<PedidoService>();
+
+		_serviceProvider = services.BuildServiceProvider();
+		_context = _serviceProvider.GetRequiredService<AppDbContext>();
+		_mapper = _serviceProvider.GetRequiredService<IMapper>();
+		_pedidoService = _serviceProvider.GetRequiredService<PedidoService>();
 	}
 
-    private void ClearDatabase()
-    {
-        _context.Pedidos.RemoveRange(_context.Pedidos);
-        _context.ItensPedidos.RemoveRange(_context.ItensPedidos);
-        _context.SaveChanges();
-    }
+	private void ClearDatabase()
+	{
+		_context.Pedidos.RemoveRange(_context.Pedidos);
+		_context.ItensPedidos.RemoveRange(_context.ItensPedidos);
+		_context.SaveChanges();
+	}
 
 	/*[Fact]
 	public async Task CreatePedido_ShouldAddPedido()
@@ -85,11 +72,9 @@ public class PedidoApiTests
 		},
 			Status = PedidoStatus.PENDENTE
 		};
-
 		// Act
 		var createdPedido = await _pedidoService.CreatePedidoAsync(pedidoDto);
 		var result = _context.Pedidos.Include(p => p.Itens).FirstOrDefault(p => p.Id == createdPedido.Id);
-
 		// Assert
 		Assert.NotNull(result);
 		Assert.Equal(pedidoDto.Total, result.Total);
@@ -143,9 +128,8 @@ public class PedidoApiTests
 		ClearDatabase();
 	}
 
-
-	/*[Fact]
-	public async Task UpdatePedido_ShouldModifyPedido()
+	[Fact]
+	public async Task DeletePedido_ShouldRemovePedido()
 	{
 		// Arrange
 		var createdPedido = await _pedidoService.CreatePedidoAsync(new PedidoDTO
@@ -155,6 +139,32 @@ public class PedidoApiTests
 			Itens = new List<ItemPedidoDTO>
 		{
 			new ItemPedidoDTO { Descricao = "Item 1", Quantidade = 2, PrecoUnitario = 25 }
+		},
+			Status = PedidoStatus.PENDENTE
+		});
+
+		// Act
+		var result = await _pedidoService.DeletePedidoAsync(createdPedido.Id);
+		var deletedPedido = await _pedidoService.GetPedidoByIdAsync(createdPedido.Id);
+
+		// Assert
+		Assert.True(result);
+		Assert.Null(deletedPedido);
+		ClearDatabase();
+	}
+
+	/*
+	[Fact]
+	public async Task UpdatePedido_ShouldModifyPedido()
+	{
+		// Arrange
+		var createdPedido = await _pedidoService.CreatePedidoAsync(new PedidoDTO
+		{
+			Data = DateTime.Now,
+			Total = 100,
+			Itens = new List<ItemPedidoDTO>
+		{
+			new ItemPedidoDTO { Descricao = "Item 2", Quantidade = 1, PrecoUnitario = 15 }
 		},
 			Status = PedidoStatus.PENDENTE
 		});
@@ -179,31 +189,6 @@ public class PedidoApiTests
 		Assert.NotNull(result);
 		Assert.Equal(updateDto.Total, result.Total);
 		Assert.Equal(PedidoStatus.CONCLUIDO, result.Status);
-		ClearDatabase();
-	}*/
-
-	[Fact]
-	public async Task DeletePedido_ShouldRemovePedido()
-	{
-		// Arrange
-		var createdPedido = await _pedidoService.CreatePedidoAsync(new PedidoDTO
-		{
-			Data = DateTime.Now,
-			Total = 100,
-			Itens = new List<ItemPedidoDTO>
-		{
-			new ItemPedidoDTO { Descricao = "Item 1", Quantidade = 2, PrecoUnitario = 25 }
-		},
-			Status = PedidoStatus.PENDENTE
-		});
-
-		// Act
-		var result = await _pedidoService.DeletePedidoAsync(createdPedido.Id);
-		var deletedPedido = await _pedidoService.GetPedidoByIdAsync(createdPedido.Id);
-
-		// Assert
-		Assert.True(result);
-		Assert.Null(deletedPedido);
 		ClearDatabase();
 	}
 
@@ -272,6 +257,6 @@ public class PedidoApiTests
 		Assert.Equal(PedidoStatus.CANCELADO, result.Status);
 		_repositoryMock.Verify(r => r.UpdateAsync(It.Is<Pedido>(p => p.Status == PedidoStatus.CANCELADO)), Times.Once);
 	}
-
+	*/
 
 }

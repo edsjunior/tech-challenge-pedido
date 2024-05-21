@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "G64.PedidoAPI.Tests": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

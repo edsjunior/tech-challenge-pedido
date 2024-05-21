@@ -1,0 +1,25 @@
+﻿version: '3.8'
+
+services:
+  pedidoapi:
+    image: pedidoapi:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - CheckoutService__BaseUrl=http://localhost:5432
+    depends_on:
+      - checkoutservice
+
+  checkoutservice:
+    image: checkoutservice:latest
+    build:
+      context: ./CheckoutService
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

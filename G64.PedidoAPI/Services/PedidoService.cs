@@ -10,11 +10,11 @@ namespace G64.PedidoAPI.Services
 		private readonly IMapper _mapper;
 		private readonly PagamentoClient _pagamentoClient;
 
-		public PedidoService(ICarrinhoPedidoRepository repository, IMapper mapper, PagamentoClient pagamentoClient)
+		public PedidoService(ICarrinhoPedidoRepository repository, IMapper mapper)
 		{
 			_repository = repository;
 			_mapper = mapper;
-			_pagamentoClient = pagamentoClient;
+			//_pagamentoClient = pagamentoClient;
 		}
 
 		public async Task<IEnumerable<PedidoDTO>> GetAllPedidosAsync()

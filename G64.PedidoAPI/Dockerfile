@@ -1,4 +1,4 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
@@ -9,17 +9,10 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["G64.PedidoAPI/G64.PedidoAPI.csproj", "G64.PedidoAPI/"]
-COPY ["G64.PedidoAPI.Tests/G64.PedidoAPI.Tests.csproj", "/G64.PedidoAPI.Tests/"]
-
 RUN dotnet restore "./G64.PedidoAPI/G64.PedidoAPI.csproj"
-RUN dotnet restore "./G64.PedidoAPI.Tests/G64.PedidoAPI.Tests.csproj"
 COPY . .
 WORKDIR "/src/G64.PedidoAPI"
 RUN dotnet build "./G64.PedidoAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-# Run tests
-WORKDIR /src
-# RUN dotnet test
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
