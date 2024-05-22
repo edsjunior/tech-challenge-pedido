@@ -12,8 +12,9 @@
 	public enum PedidoStatus
 	{
 		PENDENTE,
-		PROCESSANDO,
+		PREPARANDO,
 		CONCLUIDO,
-		CANCELADO
+		CANCELADO,
+		ENTREGUE
 	}
 }

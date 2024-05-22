@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  g64.pedidoapi:
+    image: ${DOCKER_REGISTRY-}g64pedidoapi
+    build:
+      context: .
+      dockerfile: G64.PedidoAPI/Dockerfile

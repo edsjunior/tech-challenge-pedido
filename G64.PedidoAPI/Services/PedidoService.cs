@@ -2,15 +2,16 @@
 using G64.PedidoAPI.DTOs;
 using G64.PedidoAPI.Models;
 using G64.PedidoAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 namespace G64.PedidoAPI.Services
 {
 	public class PedidoService
 	{
-		private readonly ICarrinhoPedidoRepository _repository;
+		private readonly IPedidoRepository _repository;
 		private readonly IMapper _mapper;
 		private readonly PagamentoClient _pagamentoClient;
 
-		public PedidoService(ICarrinhoPedidoRepository repository, IMapper mapper)
+		public PedidoService(IPedidoRepository repository, IMapper mapper)
 		{
 			_repository = repository;
 			_mapper = mapper;
@@ -45,6 +46,11 @@ namespace G64.PedidoAPI.Services
 
 		public async Task<bool> DeletePedidoAsync(Guid id)
 		{
+			var pedido = await _repository.GetByIdAsync(id);
+			if (pedido == null)
+			{
+				return false;
+			}
 			return await _repository.DeleteAsync(id);
 		}
 
@@ -61,7 +67,7 @@ namespace G64.PedidoAPI.Services
 
 			if (response.IsSuccess)
 			{
-				pedido.Status = PedidoStatus.PROCESSANDO;
+				pedido.Status = PedidoStatus.PREPARANDO;
 			}
 			else
 			{
@@ -72,4 +78,5 @@ namespace G64.PedidoAPI.Services
 			return _mapper.Map<PedidoDTO>(pedido);
 		}
 	}
+
 }

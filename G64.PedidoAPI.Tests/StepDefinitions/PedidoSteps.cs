@@ -35,9 +35,9 @@ namespace G64.PedidoAPI.Tests.StepDefinitions
 			});
 
 
-			services.AddScoped<ICarrinhoPedidoRepository, CarrinhoPedidoRepository>();
+			services.AddScoped<IPedidoRepository, PedidoRepository>();
 			services.AddScoped<PedidoService>();
-			services.AddScoped<CarrinhoPedidoController>();
+			services.AddScoped<PedidoController>();
 
 			_serviceProvider = services.BuildServiceProvider();
 
@@ -63,7 +63,7 @@ namespace G64.PedidoAPI.Tests.StepDefinitions
 		[When(@"I create the pedido")]
 		public async Task WhenICreateThePedido()
 		{
-			var controller = _serviceProvider.GetRequiredService<CarrinhoPedidoController>();
+			var controller = _serviceProvider.GetRequiredService<PedidoController>();
 			_actionResult = await controller.Create(_pedidoDto);
 		}
 

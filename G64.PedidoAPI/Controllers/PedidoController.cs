@@ -7,17 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace G64.PedidoAPI.Controllers
 {
+	[Route("api/pedidos")]
 	[ApiController]
-	[Route("[controller]")]
-	public class CarrinhoPedidoController : ControllerBase
+	public class PedidoController : ControllerBase
 	{
 		private readonly PedidoService _service;
 
-		public CarrinhoPedidoController(PedidoService service)
+		public PedidoController(PedidoService service)
 		{
 			_service = service;
 		}
-
+		
+		// GET: api/pedidos
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<PedidoDTO>>> GetAll()
 		{
@@ -25,6 +26,7 @@ namespace G64.PedidoAPI.Controllers
 			return Ok(pedidos);
 		}
 
+		// GET: api/pedidos/{id}
 		[HttpGet("{id}")]
 		public async Task<ActionResult<PedidoDTO>> GetById(Guid id)
 		{
@@ -36,6 +38,7 @@ namespace G64.PedidoAPI.Controllers
 			return Ok(pedido);
 		}
 
+		// POST: api/pedidos
 		[HttpPost]
 		public async Task<ActionResult<PedidoDTO>> Create([FromBody] PedidoDTO pedidoDTO)
 		{
@@ -43,6 +46,7 @@ namespace G64.PedidoAPI.Controllers
 			return CreatedAtAction(nameof(GetById), new { id = createdPedido.Id }, createdPedido);
 		}
 
+		// PUT: api/pedidos/{id}
 		[HttpPut("{id}")]
 		public async Task<IActionResult> Update(Guid id, [FromBody] PedidoDTO pedidoDTO)
 		{
@@ -57,6 +61,7 @@ namespace G64.PedidoAPI.Controllers
 			return Ok(updatedPedido);
 		}
 
+		// DELETE: api/pedidos/{id}
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(Guid id)
 		{
@@ -68,16 +73,57 @@ namespace G64.PedidoAPI.Controllers
 			return NoContent();
 		}
 
-		[HttpPut("{id}/status")]
-		public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] PedidoStatus status)
+		// PUT: api/pedidos/{id}/callback
+		[HttpPut("{id}/callback")]
+		public async Task<IActionResult> UpdateStatus(Guid id)
 		{
-			var updatedPedido = await _service.UpdatePedidoStatusAsync(id, status);
-			if (updatedPedido == null)
+			var pedido = await _service.GetPedidoByIdAsync(id);
+			
+			if (pedido == null)
 			{
 				return NotFound();
 			}
 
-			return Ok(updatedPedido);
+			pedido.Status = PedidoStatus.PREPARANDO;
+			await _service.UpdatePedidoAsync(pedido);
+
+			return Ok(pedido);
 		}
+
+		// PUT: api/pedidos/{id/preparo-finalizado}
+		[HttpPut("pedidos/{id}/preparo-finalizado")]
+		public async Task<IActionResult> PreparoFinalizado(Guid id)
+		{
+			var pedido = await _service.GetPedidoByIdAsync(id);
+
+			if (pedido == null)
+			{
+				return NotFound();
+			}
+
+			pedido.Status = PedidoStatus.CONCLUIDO;
+			await _service.UpdatePedidoAsync(pedido);
+
+			return Ok(pedido);
+		}
+
+		// PUT: api/pedidos/{id/entregue}
+		[HttpPut("pedidos/{id}/entregue")]
+		public async Task<IActionResult> Entregue(Guid id)
+		{
+			var pedido = await _service.GetPedidoByIdAsync(id);
+
+			if (pedido == null)
+			{
+				return NotFound();
+			}
+
+			pedido.Status = PedidoStatus.ENTREGUE;
+			await _service.UpdatePedidoAsync(pedido);
+
+			return Ok(pedido);
+		}
+
+
 	}
 }
