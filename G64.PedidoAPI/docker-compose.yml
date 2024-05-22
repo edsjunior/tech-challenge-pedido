@@ -15,7 +15,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - CheckoutService__BaseUrl=http://localhost:5432
+      - CheckoutService__BaseUrl=http://localhost:8080
     entrypoint: /bin/bash -c "dotnet ef database update && dotnet G64.PedidoAPI.dll"
     
   db:
