@@ -10,6 +10,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["G64.PedidoAPI/G64.PedidoAPI.csproj", "G64.PedidoAPI/"]
 RUN dotnet restore "./G64.PedidoAPI/G64.PedidoAPI.csproj"
+
 COPY . .
 WORKDIR "/src/G64.PedidoAPI"
 RUN dotnet build "./G64.PedidoAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build

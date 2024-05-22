@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 namespace G64.PedidoAPI.Repositories
 
 {
-	public class CarrinhoPedidoRepository : ICarrinhoPedidoRepository
+	public class PedidoRepository : IPedidoRepository
 	{
 		private readonly AppDbContext _context;
 
-		public CarrinhoPedidoRepository(AppDbContext context)
+		public PedidoRepository(AppDbContext context)
 		{
 			_context = context;
 		}
@@ -33,6 +33,7 @@ namespace G64.PedidoAPI.Repositories
 
 		public async Task<Pedido> UpdateAsync(Pedido pedido)
 		{
+			_context.Entry(pedido).State = EntityState.Modified;
 			_context.Pedidos.Update(pedido);
 			await _context.SaveChangesAsync();
 			return pedido;
@@ -40,9 +41,10 @@ namespace G64.PedidoAPI.Repositories
 
 		public async Task<bool> DeleteAsync(Guid id)
 		{
-			var pedido = await _context.Pedidos.FindAsync(id);
+			var pedido = await GetByIdAsync(id);
 			if (pedido != null)
 			{
+				_context.Entry(pedido).State = EntityState.Modified;
 				_context.Pedidos.Remove(pedido);
 				await _context.SaveChangesAsync();
 				return true;

@@ -2,7 +2,7 @@
 
 namespace G64.PedidoAPI.Repositories
 {
-	public interface ICarrinhoPedidoRepository
+	public interface IPedidoRepository
 	{
 		Task<IEnumerable<Pedido>> GetAllAsync();
         Task<Pedido> GetByIdAsync(Guid id);

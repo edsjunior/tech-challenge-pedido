@@ -11,7 +11,7 @@ var mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnecti
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(mySqlConnection,
 											ServerVersion.AutoDetect(mySqlConnection)));
 
-builder.Services.AddScoped<ICarrinhoPedidoRepository, CarrinhoPedidoRepository>();
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<PedidoService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient<PagamentoClient>();
@@ -26,9 +26,9 @@ if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
+	// Disable HTTPS redirection in Development environment
+	app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
