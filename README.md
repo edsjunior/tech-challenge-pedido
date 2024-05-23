@@ -28,13 +28,13 @@
 1. Restaure as dependências:
 
     ```bash
-    dotnet restore
+    dotnet restore G64.PedidoAPI
     ```
 
 2. Execute a aplicação:
 
     ```bash
-    dotnet run
+    dotnet run G64.PedidoAPI
     ```
 
     A API estará disponível em `http://localhost:5001`.
