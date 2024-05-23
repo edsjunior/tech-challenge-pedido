@@ -1,6 +1,6 @@
 # Tech Challenge - Serviço de Pedido
 
-Este repositório contém o código do serviço de pedidos para o Tech Challenge.
+-- Este repositório contém o código do serviço de pedidos para o Tech Challenge.
 
 ## Pré-requisitos
 
