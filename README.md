@@ -37,7 +37,7 @@ Este repositório contém o código do serviço de pedidos para o Tech Challenge
     dotnet run
     ```
 
-    A API estará disponível em `http://localhost:5000`.
+    A API estará disponível em `http://localhost:5001`.
 
 ### Usando Docker
 
@@ -55,7 +55,7 @@ Este repositório contém o código do serviço de pedidos para o Tech Challenge
     docker-compose up
     ```
 
-    A API estará disponível em `http://localhost:5000`.
+    A API estará disponível em `http://localhost:5001`.
 
 ## Testes
 
