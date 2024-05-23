@@ -2,16 +2,36 @@ using G64.PedidoAPI.Context;
 using G64.PedidoAPI.Repositories;
 using G64.PedidoAPI.Services;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
+using System.Net;
+using System.Net.Http;
+using System.Security.Authentication;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Configure TLS 1.2
+ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 // Add services to the container.
-var mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(mySqlConnection,
-											ServerVersion.AutoDetect(mySqlConnection)));
+//var mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(mySqlConnection,
+//ServerVersion.AutoDetect(mySqlConnection)));
+
+// Access configuration
+var host = builder.Configuration["DBHOST"] ?? "localhost";
+var port = builder.Configuration["DBPORT"] ?? "3306";
+var password = builder.Configuration["DBPASSWORD"] ?? "g64soat";
+
+// Create the connection string
+var connectionString = $"Server={host};Port={port};Database=g64soatpedido;User=root;Password={password};SslMode=None;";
+
+// Use the connection string in the services configuration
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//	options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+
+
 
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<PedidoService>();
@@ -38,6 +58,7 @@ if (app.Environment.IsDevelopment())
 	// Disable HTTPS redirection in Development environment
 	//app.UseHttpsRedirection();
 }
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

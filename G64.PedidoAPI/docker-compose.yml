@@ -1,42 +1,25 @@
 ﻿version: '3.9'
+volumes:
+    datafiles:
 
 services:
   db:
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: G64SOATPedido
-      MYSQL_DATABASE: g64soat
-    ports:
-      - "3306:3306"
+    image: mysql:8.0.0
     volumes:
-      - mysql_data:/var/lib/mysql
+      - datafiles:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: g64soat
+    
   pedidoapi:
-    image: pedidoapi:latest
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - "5000:80"
-      - "5001:443"
+      - "8080:80"
     depends_on:
-      #- checkoutservice
       - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - CheckoutService__BaseUrl=http://localhost:8080
-      - ConnectionStrings__DefaultConnection=Server=localhost;Database=G64SOATPedido;User=root;Password=g64soat;
-
-    entrypoint: dotnet G64.PedidoAPI.dll"
- 
-  #checkoutservice:
-  #  image: checkoutservice:latest
-  #  build:
-  #    context: ./CheckoutService
-  #    dockerfile: Dockerfile
-  #  ports:
-  #    - "5001:80"
-  #  environment:
-  #    - ASPNETCORE_ENVIRONMENT=Development
-volumes:
-  mysql_data:
+      - DBHOST=db
+    entrypoint: ["dotnet", "G64.PedidoAPI.dll"]
