@@ -21,7 +21,7 @@ namespace G64.PedidoAPI.Repositories
 
 		public async Task<Pedido> GetByIdAsync(Guid id)
 		{
-			return await _context.Pedidos.Include(p => p.Itens).FirstOrDefaultAsync(p => p.Id == id);
+			return await _context.Pedidos.Include(p => p.Itens).AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 		}
 
 		public async Task<Pedido> AddAsync(Pedido pedido)
