@@ -10,3 +10,17 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: g64soat
+      MYSQL_DATABASE: G64SOATPedido
+    ports:
+      - "3307:3307"
+  #check-connection:
+  #  image: mysql:latest
+  #  command: sh -c "app-get update && apt-get install"
+  #  depends_on:
+  #    - mysql
+volumes: 
+  mysql_data:
