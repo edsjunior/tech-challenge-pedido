@@ -19,7 +19,6 @@ services:
       - "8080:80"
     depends_on:
       - db
-    restart: once
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DBHOST=db

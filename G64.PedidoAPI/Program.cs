@@ -3,17 +3,20 @@ using G64.PedidoAPI.Repositories;
 using G64.PedidoAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
+using System.Net;
+using System.Net.Http;
 using System.Security.Authentication;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Configure TLS 1.2
+ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 // Add services to the container.
 //var mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 //builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(mySqlConnection,
-											//ServerVersion.AutoDetect(mySqlConnection)));
+//ServerVersion.AutoDetect(mySqlConnection)));
 
 // Access configuration
 var host = builder.Configuration["DBHOST"] ?? "localhost";
