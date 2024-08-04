@@ -134,6 +134,5 @@ namespace G64.PedidoAPI.Controllers
 			return Ok(pedido);
 		}
 
-
 	}
 }
