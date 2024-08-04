@@ -11,33 +11,31 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace G64.PedidoAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240523133756_InitialCreate1")]
-    partial class InitialCreate1
+    [Migration("20240804051429_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.32");
 
             modelBuilder.Entity("G64.PedidoAPI.Models.ItemPedido", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("PrecoUnitario")
                         .HasPrecision(12, 2)
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Quantidade")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -46,28 +44,28 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("231811de-bdfe-474b-bc51-10e3ac3251e6"),
+                            Id = new Guid("86b22a19-dd75-4930-b0cd-98ae877ee7fc"),
                             Descricao = "Combo Whopper",
                             PrecoUnitario = 15.99m,
                             Quantidade = 1
                         },
                         new
                         {
-                            Id = new Guid("b35e4a7a-5cfc-47f1-834a-d0e725903870"),
+                            Id = new Guid("a8755a2a-aec2-4a13-8528-254a134e2ecd"),
                             Descricao = "Coca-cola",
                             PrecoUnitario = 5.99m,
                             Quantidade = 1
                         },
                         new
                         {
-                            Id = new Guid("08c34cea-4933-4a5f-891f-b2269b048ea4"),
+                            Id = new Guid("901a933b-7b47-476b-a00b-061be2a5e505"),
                             Descricao = "Batata Frita",
                             PrecoUnitario = 7.99m,
                             Quantidade = 1
                         },
                         new
                         {
-                            Id = new Guid("62e9b1d1-f2fc-45b2-a398-08696e63d439"),
+                            Id = new Guid("fc72b3b6-06f9-4770-9f0c-eb93bc2be940"),
                             Descricao = "Sorvete",
                             PrecoUnitario = 9.99m,
                             Quantidade = 2
@@ -78,17 +76,17 @@ namespace G64.PedidoAPI.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Total")
                         .HasPrecision(12, 2)
-                        .HasColumnType("decimal(12,2)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -97,15 +95,15 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1eaf06ff-0d39-49c4-bb89-d4db583da720"),
-                            Data = new DateTime(2024, 5, 23, 10, 37, 55, 865, DateTimeKind.Local).AddTicks(8375),
+                            Id = new Guid("792b2330-22d6-4001-a5fe-4c97c1d47a53"),
+                            Data = new DateTime(2024, 8, 4, 2, 14, 28, 783, DateTimeKind.Local).AddTicks(7637),
                             Status = 0,
                             Total = 29.97m
                         },
                         new
                         {
-                            Id = new Guid("4572888d-aebb-4405-a72f-3225953ab60c"),
-                            Data = new DateTime(2024, 5, 23, 10, 37, 55, 865, DateTimeKind.Local).AddTicks(8388),
+                            Id = new Guid("99d692e8-3b89-48d2-8280-9d2ca5b35a60"),
+                            Data = new DateTime(2024, 8, 4, 2, 14, 28, 783, DateTimeKind.Local).AddTicks(7649),
                             Status = 0,
                             Total = 19.98m
                         });
@@ -114,10 +112,10 @@ namespace G64.PedidoAPI.Migrations
             modelBuilder.Entity("PedidoItemPedido", b =>
                 {
                     b.Property<Guid>("PedidosId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("ItemPedidosId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("PedidosId", "ItemPedidosId");
 
@@ -128,23 +126,23 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            PedidosId = new Guid("1eaf06ff-0d39-49c4-bb89-d4db583da720"),
-                            ItemPedidosId = new Guid("231811de-bdfe-474b-bc51-10e3ac3251e6")
+                            PedidosId = new Guid("792b2330-22d6-4001-a5fe-4c97c1d47a53"),
+                            ItemPedidosId = new Guid("86b22a19-dd75-4930-b0cd-98ae877ee7fc")
                         },
                         new
                         {
-                            PedidosId = new Guid("1eaf06ff-0d39-49c4-bb89-d4db583da720"),
-                            ItemPedidosId = new Guid("b35e4a7a-5cfc-47f1-834a-d0e725903870")
+                            PedidosId = new Guid("792b2330-22d6-4001-a5fe-4c97c1d47a53"),
+                            ItemPedidosId = new Guid("a8755a2a-aec2-4a13-8528-254a134e2ecd")
                         },
                         new
                         {
-                            PedidosId = new Guid("1eaf06ff-0d39-49c4-bb89-d4db583da720"),
-                            ItemPedidosId = new Guid("08c34cea-4933-4a5f-891f-b2269b048ea4")
+                            PedidosId = new Guid("792b2330-22d6-4001-a5fe-4c97c1d47a53"),
+                            ItemPedidosId = new Guid("901a933b-7b47-476b-a00b-061be2a5e505")
                         },
                         new
                         {
-                            PedidosId = new Guid("4572888d-aebb-4405-a72f-3225953ab60c"),
-                            ItemPedidosId = new Guid("62e9b1d1-f2fc-45b2-a398-08696e63d439")
+                            PedidosId = new Guid("99d692e8-3b89-48d2-8280-9d2ca5b35a60"),
+                            ItemPedidosId = new Guid("fc72b3b6-06f9-4770-9f0c-eb93bc2be940")
                         });
                 });
 
