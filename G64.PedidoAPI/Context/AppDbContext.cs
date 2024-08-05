@@ -34,6 +34,13 @@ namespace G64.PedidoAPI.Context
 				.HasPrecision(12, 2)
 				.IsRequired();
 
+			modelBuilder.Entity<Pedido>().Property(e => e.Data)
+					  .HasColumnType("timestamp with time zone")
+					  .HasConversion(
+						  v => v,
+						  v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+					  );
+
 			//Seed data
 			var produto1 = new ItemPedido { Id = Guid.NewGuid(), Descricao = "Combo Whopper", Quantidade = 1, PrecoUnitario = 15.99m };
 			var produto2 = new ItemPedido { Id = Guid.NewGuid(), Descricao = "Coca-cola", Quantidade = 1, PrecoUnitario = 5.99m };

@@ -23,5 +23,5 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # Copiar o banco de dados SQLite para o contêiner (opcional)
-COPY --from=build /src/data/app.db /app/data/
+#COPY --from=build /src/data/app.db /app/data/
 ENTRYPOINT ["dotnet", "G64.PedidoAPI.dll"]
