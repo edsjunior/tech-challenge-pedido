@@ -100,7 +100,7 @@ namespace G64.PedidoAPI.Controllers
 			return Ok(pedido);
 		}
 
-		// PUT: api/pedidos/{id/preparo-finalizado}
+		// PUT: api/pedidos/{id}/preparo-finalizado
 		[HttpPut("{id}/preparo-finalizado")]
 		public async Task<IActionResult> PreparoFinalizado(Guid id)
 		{
@@ -117,7 +117,7 @@ namespace G64.PedidoAPI.Controllers
 			return Ok(pedido);
 		}
 
-		// PUT: api/pedidos/{id/entregue}
+		// PUT: api/pedidos/{id}/entregue
 		[HttpPut("{id}/entregue")]
 		public async Task<IActionResult> Entregue(Guid id)
 		{
