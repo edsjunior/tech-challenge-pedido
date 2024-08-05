@@ -62,14 +62,24 @@ namespace G64.PedidoAPI.Controllers
 		}
 
 		// DELETE: api/pedidos/{id}
-		[HttpDelete("{id}")]
+		[HttpPut("{id}/cancelar")]
 		public async Task<IActionResult> Delete(Guid id)
 		{
-			var result = await _service.DeletePedidoAsync(id);
-			if (!result)
+			//var result = await _service.DeletePedidoAsync(id);
+			//if (!result)
+			//{
+			//	return NotFound();
+			//}
+			var pedido = await _service.GetPedidoByIdAsync(id);
+
+			if (pedido == null)
 			{
 				return NotFound();
 			}
+
+			pedido.Status = PedidoStatus.CANCELADO;
+			await _service.UpdatePedidoAsync(pedido);
+
 			return NoContent();
 		}
 
@@ -90,8 +100,8 @@ namespace G64.PedidoAPI.Controllers
 			return Ok(pedido);
 		}
 
-		// PUT: api/pedidos/{id/preparo-finalizado}
-		[HttpPut("pedidos/{id}/preparo-finalizado")]
+		// PUT: api/pedidos/{id}/preparo-finalizado
+		[HttpPut("{id}/preparo-finalizado")]
 		public async Task<IActionResult> PreparoFinalizado(Guid id)
 		{
 			var pedido = await _service.GetPedidoByIdAsync(id);
@@ -107,8 +117,8 @@ namespace G64.PedidoAPI.Controllers
 			return Ok(pedido);
 		}
 
-		// PUT: api/pedidos/{id/entregue}
-		[HttpPut("pedidos/{id}/entregue")]
+		// PUT: api/pedidos/{id}/entregue
+		[HttpPut("{id}/entregue")]
 		public async Task<IActionResult> Entregue(Guid id)
 		{
 			var pedido = await _service.GetPedidoByIdAsync(id);
@@ -123,7 +133,6 @@ namespace G64.PedidoAPI.Controllers
 
 			return Ok(pedido);
 		}
-
 
 	}
 }

@@ -3,6 +3,7 @@ using System;
 using G64.PedidoAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace G64.PedidoAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240805031821_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,14 +101,14 @@ namespace G64.PedidoAPI.Migrations
                         new
                         {
                             Id = new Guid("4213ed74-149c-4927-9f26-f204a782ddbd"),
-                            Data = new DateTime(2024, 8, 5, 0, 18, 21, 332, DateTimeKind.Utc).AddTicks(3078),
+                            Data = new DateTime(2024, 8, 5, 0, 18, 21, 332, DateTimeKind.Local).AddTicks(3078),
                             Status = 0,
                             Total = 29.97m
                         },
                         new
                         {
                             Id = new Guid("7467bb40-e942-44d7-b32e-bb2972032f86"),
-                            Data = new DateTime(2024, 8, 5, 0, 18, 21, 332, DateTimeKind.Utc).AddTicks(3090),
+                            Data = new DateTime(2024, 8, 5, 0, 18, 21, 332, DateTimeKind.Local).AddTicks(3090),
                             Status = 0,
                             Total = 19.98m
                         });
