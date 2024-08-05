@@ -17,9 +17,9 @@ Este repositório contém o código do serviço de pedidos para o Tech Challenge
    cd tech-challenge-pedido
    ```
 
-2. Configure o banco de dados em memória e as dependências:
+<!-- 2. Configure o banco de dados em memória e as dependências:
 
-   No arquivo `appsettings.json`, ajuste as configurações conforme necessário.
+   No arquivo `appsettings.json`, ajuste as configurações conforme necessário. -->
 
 ## Executando o Serviço
 
