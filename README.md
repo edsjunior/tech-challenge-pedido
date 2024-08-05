@@ -1,6 +1,6 @@
 # Tech Challenge - Serviço de Pedido
 
-Este repositório contém o código do serviço de pedidos para o Tech Challenge.
+ Este repositório contém o código do serviço de pedidos para o Tech Challenge.
 
 ## Pré-requisitos
 
@@ -22,6 +22,7 @@ Este repositório contém o código do serviço de pedidos para o Tech Challenge
    No arquivo `appsettings.json`, ajuste as configurações conforme necessário.
 
 ## Executando o Serviço
+
 
 ### Usando Docker
 
