@@ -12,32 +12,16 @@ Este repositório contém o código do serviço de pedidos para o Tech Challenge
 
 1. Clone o repositório:
 
-    ```bash
-    git clone https://github.com/edsjunior/tech-challenge-pedido.git
-    cd tech-challenge-pedido
-    ```
+   ```bash
+   git clone https://github.com/edsjunior/tech-challenge-pedido.git
+   cd tech-challenge-pedido
+   ```
 
 2. Configure o banco de dados em memória e as dependências:
 
-    No arquivo `appsettings.json`, ajuste as configurações conforme necessário.
+   No arquivo `appsettings.json`, ajuste as configurações conforme necessário.
 
 ## Executando o Serviço
-
-### Localmente
-
-1. Restaure as dependências:
-
-    ```bash
-    dotnet restore
-    ```
-
-2. Execute a aplicação:
-
-    ```bash
-    dotnet run
-    ```
-
-    A API estará disponível em `http://localhost:5001`.
 
 ### Usando Docker
 
@@ -45,17 +29,17 @@ Este repositório contém o código do serviço de pedidos para o Tech Challenge
 
 2. Construa a imagem Docker:
 
-    ```bash
-    docker-compose build
-    ```
+   ```bash
+   docker-compose build
+   ```
 
 3. Suba os containers:
 
-    ```bash
-    docker-compose up
-    ```
+   ```bash
+   docker-compose up
+   ```
 
-    A API estará disponível em `http://localhost:5001`.
+   A API estará disponível em `http://localhost:8080/swagger/index.html`.
 
 ## Testes
 
@@ -63,3 +47,4 @@ Para executar os testes, use o comando:
 
 ```bash
 dotnet test
+```
