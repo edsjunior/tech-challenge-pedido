@@ -7,6 +7,8 @@
 		public decimal Total { get; set; }
 		public List<ItemPedido> Itens { get; set; } = new List<ItemPedido>();
 		public PedidoStatus Status { get; set; }
+
+		public string MetodoPagamento { get; set; }
 	}
 
 	public enum PedidoStatus

@@ -12,12 +12,13 @@ namespace G64.PedidoAPI.Controllers
 	public class PedidoController : ControllerBase
 	{
 		private readonly PedidoService _service;
+		private readonly PagamentoService _pagamentoService;
 
 		public PedidoController(PedidoService service)
 		{
 			_service = service;
 		}
-		
+
 		// GET: api/pedidos
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<PedidoDTO>>> GetAll()
@@ -39,37 +40,60 @@ namespace G64.PedidoAPI.Controllers
 		}
 
 		// POST: api/pedidos
+		// [HttpPost]
+		// public async Task<ActionResult<PedidoDTO>> Create([FromBody] PedidoDTO pedidoDTO)
+		// {
+		// 	var createdPedido = await _service.CreatePedidoAsync(pedidoDTO);
+		// 	return CreatedAtAction(nameof(GetById), new { id = createdPedido.Id }, createdPedido);
+		// }
+
+
+		// POST: api/pedidos
 		[HttpPost]
 		public async Task<ActionResult<PedidoDTO>> Create([FromBody] PedidoDTO pedidoDTO)
 		{
 			var createdPedido = await _service.CreatePedidoAsync(pedidoDTO);
+
+			// Cria a solicitação de pagamento
+			var pagamentoRequest = new PagamentoRequestDTO
+			{
+				MetodoPagamento = pedidoDTO.MetodoPagamento,
+				Valor = createdPedido.Total,
+				NumeroPedido = createdPedido.Id.ToString()
+			};
+
+			// Faz a chamada à API de pagamento
+			var pagamentoResponse = await _pagamentoService.CriaPagamentoAsync(pagamentoRequest);
+
+			// Atualiza o pedido com informações de pagamento
+			createdPedido.Status = pagamentoResponse.Status;
+			await _service.UpdatePedidoAsync(createdPedido);
+
 			return CreatedAtAction(nameof(GetById), new { id = createdPedido.Id }, createdPedido);
 		}
 
-		// PUT: api/pedidos/{id}
-		[HttpPut("{id}")]
-		public async Task<IActionResult> Update(Guid id, [FromBody] PedidoDTO pedidoDTO)
-		{
-			var existingPedido = await _service.GetPedidoByIdAsync(id);
-			if (existingPedido == null)
-			{
-				return NotFound();
-			}
 
-			pedidoDTO.Id = id;
-			var updatedPedido = await _service.UpdatePedidoAsync(pedidoDTO);
-			return Ok(updatedPedido);
-		}
 
-		// DELETE: api/pedidos/{id}
+		// // PUT: api/pedidos/{id}
+		// [HttpPut("{id}")]
+		// public async Task<IActionResult> Update(Guid id, [FromBody] PedidoDTO pedidoDTO)
+		// {
+		// 	var existingPedido = await _service.GetPedidoByIdAsync(id);
+		// 	if (existingPedido == null)
+		// 	{
+		// 		return NotFound();
+		// 	}
+
+		// 	pedidoDTO.Id = id;
+		// 	var updatedPedido = await _service.UpdatePedidoAsync(pedidoDTO);
+		// 	return Ok(updatedPedido);
+		// }
+
+
+		// PUT: api/pedidos/{id}/cancelar
 		[HttpPut("{id}/cancelar")]
-		public async Task<IActionResult> Delete(Guid id)
+		public async Task<IActionResult> Cancelar(Guid id)
 		{
-			//var result = await _service.DeletePedidoAsync(id);
-			//if (!result)
-			//{
-			//	return NotFound();
-			//}
 			var pedido = await _service.GetPedidoByIdAsync(id);
 
 			if (pedido == null)
@@ -80,7 +104,7 @@ namespace G64.PedidoAPI.Controllers
 			pedido.Status = PedidoStatus.CANCELADO;
 			await _service.UpdatePedidoAsync(pedido);
 
-			return NoContent();
+			return Ok(pedido);
 		}
 
 		// PUT: api/pedidos/{id}/callback
@@ -88,7 +112,7 @@ namespace G64.PedidoAPI.Controllers
 		public async Task<IActionResult> UpdateStatus(Guid id)
 		{
 			var pedido = await _service.GetPedidoByIdAsync(id);
-			
+
 			if (pedido == null)
 			{
 				return NotFound();
@@ -133,6 +157,20 @@ namespace G64.PedidoAPI.Controllers
 
 			return Ok(pedido);
 		}
+
+		// DELETE: api/pedidos/{id}
+		[HttpDelete("{id}/deletar")]
+		public async Task<IActionResult> Delete(Guid id)
+		{
+			var result = await _service.DeletePedidoAsync(id);
+			if (!result)
+			{
+				return NotFound();
+			}
+
+			return NoContent();
+		}
+
 
 	}
 }
