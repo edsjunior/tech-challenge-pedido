@@ -47,28 +47,28 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d35786a3-4c2a-45db-9edc-9d9df76736c4"),
+                            Id = new Guid("2d80516f-5b64-418f-9d31-b6bcd82915db"),
                             Descricao = "Combo Whopper",
                             PrecoUnitario = 15.99m,
                             Quantidade = 1
                         },
                         new
                         {
-                            Id = new Guid("3107f028-53d7-4f76-8d6d-a2445827aa4e"),
+                            Id = new Guid("28147948-e6b8-4353-b918-30a99f4783a8"),
                             Descricao = "Coca-cola",
                             PrecoUnitario = 5.99m,
                             Quantidade = 1
                         },
                         new
                         {
-                            Id = new Guid("0d351c7a-be0b-400a-b454-4989c5e4ef38"),
+                            Id = new Guid("42dcbb5f-7a47-46eb-9ee5-7e95ce74d580"),
                             Descricao = "Batata Frita",
                             PrecoUnitario = 7.99m,
                             Quantidade = 1
                         },
                         new
                         {
-                            Id = new Guid("6fd9695c-a117-47bd-a557-806b79206808"),
+                            Id = new Guid("7bf1630e-b05e-49a9-9a5d-781a9bb586b2"),
                             Descricao = "Sorvete",
                             PrecoUnitario = 9.99m,
                             Quantidade = 2
@@ -84,6 +84,10 @@ namespace G64.PedidoAPI.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("MetodoPagamento")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
@@ -98,15 +102,17 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4213ed74-149c-4927-9f26-f204a782ddbd"),
-                            Data = new DateTime(2024, 8, 5, 0, 18, 21, 332, DateTimeKind.Utc).AddTicks(3078),
+                            Id = new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"),
+                            Data = new DateTime(2024, 8, 6, 0, 59, 32, 930, DateTimeKind.Utc).AddTicks(2238),
+                            MetodoPagamento = "PENDENTE",
                             Status = 0,
                             Total = 29.97m
                         },
                         new
                         {
-                            Id = new Guid("7467bb40-e942-44d7-b32e-bb2972032f86"),
-                            Data = new DateTime(2024, 8, 5, 0, 18, 21, 332, DateTimeKind.Utc).AddTicks(3090),
+                            Id = new Guid("fa288cff-f2a6-4311-9025-3fe4404c02f9"),
+                            Data = new DateTime(2024, 8, 6, 0, 59, 32, 930, DateTimeKind.Utc).AddTicks(2252),
+                            MetodoPagamento = "PENDENTE",
                             Status = 0,
                             Total = 19.98m
                         });
@@ -129,23 +135,23 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            PedidosId = new Guid("4213ed74-149c-4927-9f26-f204a782ddbd"),
-                            ItemPedidosId = new Guid("d35786a3-4c2a-45db-9edc-9d9df76736c4")
+                            PedidosId = new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"),
+                            ItemPedidosId = new Guid("2d80516f-5b64-418f-9d31-b6bcd82915db")
                         },
                         new
                         {
-                            PedidosId = new Guid("4213ed74-149c-4927-9f26-f204a782ddbd"),
-                            ItemPedidosId = new Guid("3107f028-53d7-4f76-8d6d-a2445827aa4e")
+                            PedidosId = new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"),
+                            ItemPedidosId = new Guid("28147948-e6b8-4353-b918-30a99f4783a8")
                         },
                         new
                         {
-                            PedidosId = new Guid("4213ed74-149c-4927-9f26-f204a782ddbd"),
-                            ItemPedidosId = new Guid("0d351c7a-be0b-400a-b454-4989c5e4ef38")
+                            PedidosId = new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"),
+                            ItemPedidosId = new Guid("42dcbb5f-7a47-46eb-9ee5-7e95ce74d580")
                         },
                         new
                         {
-                            PedidosId = new Guid("7467bb40-e942-44d7-b32e-bb2972032f86"),
-                            ItemPedidosId = new Guid("6fd9695c-a117-47bd-a557-806b79206808")
+                            PedidosId = new Guid("fa288cff-f2a6-4311-9025-3fe4404c02f9"),
+                            ItemPedidosId = new Guid("7bf1630e-b05e-49a9-9a5d-781a9bb586b2")
                         });
                 });
 

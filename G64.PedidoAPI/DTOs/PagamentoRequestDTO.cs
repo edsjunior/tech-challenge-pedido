@@ -4,7 +4,11 @@ namespace G64.PedidoAPI.DTOs
 {
 	public class PagamentoRequestDTO
 	{
-		public Guid PedidoId { get; set; }
-		public PedidoStatus Status { get; set; }
+		public string MetodoPagamento { get; set; }
+		public decimal Valor { get; set; }
+		public string NumeroPedido { get; set; }
+		
+
 	}
 }
+

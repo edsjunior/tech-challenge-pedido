@@ -16,10 +16,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<PedidoService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddHttpClient<PagamentoClient>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Adiciona HttpClient ao container de dependências
+builder.Services.AddHttpClient<PagamentoService>(client =>
+{
+	var pagamentoApiUrl = builder.Configuration["PAGAMENTO_API_URL"];
+	client.BaseAddress = new Uri(pagamentoApiUrl);
+});
+
+// Registrar o consumidor RabbitMQ como serviço hospedado
+builder.Services.AddHostedService<RabbitMqConsumer>();
 
 var app = builder.Build();
 

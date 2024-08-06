@@ -53,8 +53,8 @@ namespace G64.PedidoAPI.Context
 			var pedidoId1 = Guid.NewGuid();
 			var pedidoId2 = Guid.NewGuid();
 			modelBuilder.Entity<Pedido>().HasData(
-					new Pedido { Id = pedidoId1, Data = DateTime.Now, Total = 29.97m, Status = PedidoStatus.PENDENTE },
-					new Pedido { Id = pedidoId2, Data = DateTime.Now, Total = 19.98m, Status = PedidoStatus.PENDENTE }
+					new Pedido { Id = pedidoId1, Data = DateTime.Now, Total = 29.97m, Status = PedidoStatus.PENDENTE, MetodoPagamento = "PENDENTE" },
+					new Pedido { Id = pedidoId2, Data = DateTime.Now, Total = 19.98m, Status = PedidoStatus.PENDENTE, MetodoPagamento = "PENDENTE" }
 				);
 
 			modelBuilder.Entity<Pedido>().HasKey(c => c.Id);

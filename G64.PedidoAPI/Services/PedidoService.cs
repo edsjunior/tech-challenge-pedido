@@ -9,7 +9,7 @@ namespace G64.PedidoAPI.Services
 	{
 		private readonly IPedidoRepository _repository;
 		private readonly IMapper _mapper;
-		private readonly PagamentoClient _pagamentoClient;
+		//private readonly PagamentoClient _pagamentoClient;
 
 		public PedidoService(IPedidoRepository repository, IMapper mapper)
 		{
@@ -54,29 +54,29 @@ namespace G64.PedidoAPI.Services
 			return await _repository.DeleteAsync(id);
 		}
 
-		public async Task<PedidoDTO> UpdatePedidoStatusAsync(Guid pedidoId, PedidoStatus initialStatus)
-		{
-			var pedido = await _repository.GetByIdAsync(pedidoId);
-			if (pedido == null)
-			{
-				return null;
-			}
+		// public async Task<PedidoDTO> UpdatePedidoStatusAsync(Guid pedidoId, PedidoStatus initialStatus)
+		// {
+		// 	var pedido = await _repository.GetByIdAsync(pedidoId);
+		// 	if (pedido == null)
+		// 	{
+		// 		return null;
+		// 	}
 
-			var paymentRequest = new PagamentoRequestDTO { PedidoId = pedidoId, Status = initialStatus };
-			var response = await _pagamentoClient.ProcessPaymentAsync(paymentRequest);
+		// 	var paymentRequest = new PagamentoRequestDTO { PedidoId = pedidoId, Status = initialStatus };
+		// 	var response = await _pagamentoClient.ProcessPaymentAsync(paymentRequest);
 
-			if (response.IsSuccess)
-			{
-				pedido.Status = PedidoStatus.PREPARANDO;
-			}
-			else
-			{
-				pedido.Status = PedidoStatus.CANCELADO;
-			}
+		// 	if (response.IsSuccess)
+		// 	{
+		// 		pedido.Status = PedidoStatus.PREPARANDO;
+		// 	}
+		// 	else
+		// 	{
+		// 		pedido.Status = PedidoStatus.CANCELADO;
+		// 	}
 
-			await _repository.UpdateAsync(pedido);
-			return _mapper.Map<PedidoDTO>(pedido);
-		}
+		// 	await _repository.UpdateAsync(pedido);
+		// 	return _mapper.Map<PedidoDTO>(pedido);
+		// }
 	}
 
 }

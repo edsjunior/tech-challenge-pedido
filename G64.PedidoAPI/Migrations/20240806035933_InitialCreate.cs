@@ -30,7 +30,8 @@ namespace G64.PedidoAPI.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Data = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Total = table.Column<decimal>(type: "numeric(12,2)", precision: 12, scale: 2, nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    MetodoPagamento = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,19 +67,19 @@ namespace G64.PedidoAPI.Migrations
                 columns: new[] { "Id", "Descricao", "PrecoUnitario", "Quantidade" },
                 values: new object[,]
                 {
-                    { new Guid("0d351c7a-be0b-400a-b454-4989c5e4ef38"), "Batata Frita", 7.99m, 1 },
-                    { new Guid("3107f028-53d7-4f76-8d6d-a2445827aa4e"), "Coca-cola", 5.99m, 1 },
-                    { new Guid("6fd9695c-a117-47bd-a557-806b79206808"), "Sorvete", 9.99m, 2 },
-                    { new Guid("d35786a3-4c2a-45db-9edc-9d9df76736c4"), "Combo Whopper", 15.99m, 1 }
+                    { new Guid("28147948-e6b8-4353-b918-30a99f4783a8"), "Coca-cola", 5.99m, 1 },
+                    { new Guid("2d80516f-5b64-418f-9d31-b6bcd82915db"), "Combo Whopper", 15.99m, 1 },
+                    { new Guid("42dcbb5f-7a47-46eb-9ee5-7e95ce74d580"), "Batata Frita", 7.99m, 1 },
+                    { new Guid("7bf1630e-b05e-49a9-9a5d-781a9bb586b2"), "Sorvete", 9.99m, 2 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Pedidos",
-                columns: new[] { "Id", "Data", "Status", "Total" },
+                columns: new[] { "Id", "Data", "MetodoPagamento", "Status", "Total" },
                 values: new object[,]
                 {
-                    { new Guid("4213ed74-149c-4927-9f26-f204a782ddbd"), new DateTime(2024, 8, 5, 0, 18, 21, 332, DateTimeKind.Utc).AddTicks(3078), 0, 29.97m },
-                    { new Guid("7467bb40-e942-44d7-b32e-bb2972032f86"), new DateTime(2024, 8, 5, 0, 18, 21, 332, DateTimeKind.Utc).AddTicks(3090), 0, 19.98m }
+                    { new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"), new DateTime(2024, 8, 6, 0, 59, 32, 930, DateTimeKind.Utc).AddTicks(2238), "PENDENTE", 0, 29.97m },
+                    { new Guid("fa288cff-f2a6-4311-9025-3fe4404c02f9"), new DateTime(2024, 8, 6, 0, 59, 32, 930, DateTimeKind.Utc).AddTicks(2252), "PENDENTE", 0, 19.98m }
                 });
 
             migrationBuilder.InsertData(
@@ -86,10 +87,10 @@ namespace G64.PedidoAPI.Migrations
                 columns: new[] { "ItemPedidosId", "PedidosId" },
                 values: new object[,]
                 {
-                    { new Guid("0d351c7a-be0b-400a-b454-4989c5e4ef38"), new Guid("4213ed74-149c-4927-9f26-f204a782ddbd") },
-                    { new Guid("3107f028-53d7-4f76-8d6d-a2445827aa4e"), new Guid("4213ed74-149c-4927-9f26-f204a782ddbd") },
-                    { new Guid("d35786a3-4c2a-45db-9edc-9d9df76736c4"), new Guid("4213ed74-149c-4927-9f26-f204a782ddbd") },
-                    { new Guid("6fd9695c-a117-47bd-a557-806b79206808"), new Guid("7467bb40-e942-44d7-b32e-bb2972032f86") }
+                    { new Guid("28147948-e6b8-4353-b918-30a99f4783a8"), new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d") },
+                    { new Guid("2d80516f-5b64-418f-9d31-b6bcd82915db"), new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d") },
+                    { new Guid("42dcbb5f-7a47-46eb-9ee5-7e95ce74d580"), new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d") },
+                    { new Guid("7bf1630e-b05e-49a9-9a5d-781a9bb586b2"), new Guid("fa288cff-f2a6-4311-9025-3fe4404c02f9") }
                 });
 
             migrationBuilder.CreateIndex(
