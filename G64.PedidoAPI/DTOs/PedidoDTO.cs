@@ -9,5 +9,7 @@ namespace G64.PedidoAPI.DTOs
 		public decimal Total { get; set; }
 		public List<ItemPedidoDTO> Itens { get; set; }
 		public PedidoStatus Status { get; set; }
+
+		public string MetodoPagamento { get; set; }
 	}
 }

@@ -29,7 +29,7 @@ public class PedidoApiTests
 	private readonly Mock<IMapper> _mapperMock;
 	private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock;
 	private readonly IConfiguration _configuration;
-	private readonly PagamentoClient _pagamentoClient;
+	// private readonly PagamentoClient _pagamentoClient;
 
 	public PedidoApiTests()
 	{
