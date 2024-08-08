@@ -13,29 +13,31 @@ namespace G64.PedidoAPI.Migrations
                 name: "ItensPedidos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Descricao = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Quantidade = table.Column<int>(type: "integer", nullable: false),
-                    PrecoUnitario = table.Column<decimal>(type: "numeric(12,2)", precision: 12, scale: 2, nullable: false)
+                    uuid = table.Column<Guid>(type: "uuid", nullable: false),
+                    titulo = table.Column<string>(type: "text", nullable: false),
+                    categoria = table.Column<string>(type: "text", nullable: false),
+                    descricao = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    quantidade = table.Column<int>(type: "integer", nullable: false),
+                    valorPorUnidade = table.Column<decimal>(type: "numeric(12,2)", precision: 12, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItensPedidos", x => x.Id);
+                    table.PrimaryKey("PK_ItensPedidos", x => x.uuid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Pedidos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Data = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Total = table.Column<decimal>(type: "numeric(12,2)", precision: 12, scale: 2, nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    MetodoPagamento = table.Column<string>(type: "text", nullable: false)
+                    pedidoId = table.Column<Guid>(type: "uuid", nullable: false),
+                    data = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    valorTotal = table.Column<decimal>(type: "numeric(12,2)", precision: 12, scale: 2, nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    statusPagamento = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pedidos", x => x.Id);
+                    table.PrimaryKey("PK_Pedidos", x => x.pedidoId);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,34 +54,34 @@ namespace G64.PedidoAPI.Migrations
                         name: "FK_PedidoItemPedido_ItensPedidos_ItemPedidosId",
                         column: x => x.ItemPedidosId,
                         principalTable: "ItensPedidos",
-                        principalColumn: "Id",
+                        principalColumn: "uuid",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PedidoItemPedido_Pedidos_PedidosId",
                         column: x => x.PedidosId,
                         principalTable: "Pedidos",
-                        principalColumn: "Id",
+                        principalColumn: "pedidoId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "ItensPedidos",
-                columns: new[] { "Id", "Descricao", "PrecoUnitario", "Quantidade" },
+                columns: new[] { "uuid", "categoria", "descricao", "quantidade", "titulo", "valorPorUnidade" },
                 values: new object[,]
                 {
-                    { new Guid("28147948-e6b8-4353-b918-30a99f4783a8"), "Coca-cola", 5.99m, 1 },
-                    { new Guid("2d80516f-5b64-418f-9d31-b6bcd82915db"), "Combo Whopper", 15.99m, 1 },
-                    { new Guid("42dcbb5f-7a47-46eb-9ee5-7e95ce74d580"), "Batata Frita", 7.99m, 1 },
-                    { new Guid("7bf1630e-b05e-49a9-9a5d-781a9bb586b2"), "Sorvete", 9.99m, 2 }
+                    { new Guid("135d1439-b2b8-4010-926b-413cb8f638de"), "Acompanhamento", "Batata Frita", 1, "Fritas", 7.99m },
+                    { new Guid("14823eaa-1181-4495-a061-cda21898d89d"), "Sobremesa", "Sorvete de flocos", 2, "Sorvete", 9.99m },
+                    { new Guid("69d69f8b-d34e-4134-9169-1380a0bbd6a6"), "Lanche", "Combo Whopper", 1, "Whopper", 15.99m },
+                    { new Guid("f8bf4fe4-1285-4a76-be05-6f3ce4e4f10d"), "Bebida", "Coca-cola", 1, "Refrigerante", 5.99m }
                 });
 
             migrationBuilder.InsertData(
                 table: "Pedidos",
-                columns: new[] { "Id", "Data", "MetodoPagamento", "Status", "Total" },
+                columns: new[] { "pedidoId", "data", "status", "statusPagamento", "valorTotal" },
                 values: new object[,]
                 {
-                    { new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"), new DateTime(2024, 8, 6, 0, 59, 32, 930, DateTimeKind.Utc).AddTicks(2238), "PENDENTE", 0, 29.97m },
-                    { new Guid("fa288cff-f2a6-4311-9025-3fe4404c02f9"), new DateTime(2024, 8, 6, 0, 59, 32, 930, DateTimeKind.Utc).AddTicks(2252), "PENDENTE", 0, 19.98m }
+                    { new Guid("c85d425e-492a-4331-875f-fb31f067002f"), new DateTime(2024, 8, 7, 1, 27, 48, 242, DateTimeKind.Utc).AddTicks(493), "PENDENTE", "PENDENTE", 19.98m },
+                    { new Guid("e69b4050-2153-423a-bdce-6afe5146af21"), new DateTime(2024, 8, 7, 1, 27, 48, 242, DateTimeKind.Utc).AddTicks(456), "PENDENTE", "PENDENTE", 29.97m }
                 });
 
             migrationBuilder.InsertData(
@@ -87,10 +89,10 @@ namespace G64.PedidoAPI.Migrations
                 columns: new[] { "ItemPedidosId", "PedidosId" },
                 values: new object[,]
                 {
-                    { new Guid("28147948-e6b8-4353-b918-30a99f4783a8"), new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d") },
-                    { new Guid("2d80516f-5b64-418f-9d31-b6bcd82915db"), new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d") },
-                    { new Guid("42dcbb5f-7a47-46eb-9ee5-7e95ce74d580"), new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d") },
-                    { new Guid("7bf1630e-b05e-49a9-9a5d-781a9bb586b2"), new Guid("fa288cff-f2a6-4311-9025-3fe4404c02f9") }
+                    { new Guid("14823eaa-1181-4495-a061-cda21898d89d"), new Guid("c85d425e-492a-4331-875f-fb31f067002f") },
+                    { new Guid("135d1439-b2b8-4010-926b-413cb8f638de"), new Guid("e69b4050-2153-423a-bdce-6afe5146af21") },
+                    { new Guid("69d69f8b-d34e-4134-9169-1380a0bbd6a6"), new Guid("e69b4050-2153-423a-bdce-6afe5146af21") },
+                    { new Guid("f8bf4fe4-1285-4a76-be05-6f3ce4e4f10d"), new Guid("e69b4050-2153-423a-bdce-6afe5146af21") }
                 });
 
             migrationBuilder.CreateIndex(

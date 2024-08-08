@@ -2,9 +2,11 @@ namespace G64.PedidoAPI.Models
 {
     public class PagamentoResponse
     {
-        public string Id { get; set; }
-        public PedidoStatus Status { get; set; }
-        public decimal Valor { get; set; }
-        // Adicione outras propriedades conforme necessário
+
+        public String uuid { get; set; }
+        public String qrCode { get; set; }
+
+        public String status { get; set; }
+
     }
 }

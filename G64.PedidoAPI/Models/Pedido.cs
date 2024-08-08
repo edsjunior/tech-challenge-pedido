@@ -2,21 +2,16 @@
 {
 	public class Pedido
 	{
-		public Guid Id { get; set; }
-		public DateTime Data { get; set; }
-		public decimal Total { get; set; }
-		public List<ItemPedido> Itens { get; set; } = new List<ItemPedido>();
-		public PedidoStatus Status { get; set; }
+		public Guid pedidoId { get; set; }
+		public DateTime data { get; set; }
+		public decimal valorTotal { get; set; }
+		public List<ItemPedido> items { get; set; } = new List<ItemPedido>();
+		public String status { get; set; }
 
-		public string MetodoPagamento { get; set; }
+        public String statusPagamento { get; set; }
+
 	}
 
-	public enum PedidoStatus
-	{
-		PENDENTE,
-		PREPARANDO,
-		CONCLUIDO,
-		CANCELADO,
-		ENTREGUE
-	}
+	
+	
 }

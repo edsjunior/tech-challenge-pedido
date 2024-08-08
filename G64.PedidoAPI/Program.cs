@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<PedidoService>();
+builder.Services.AddScoped<PagamentoService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -31,6 +32,13 @@ builder.Services.AddHttpClient<PagamentoService>(client =>
 builder.Services.AddHostedService<RabbitMqConsumer>();
 
 var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+	context.Response.Headers.Add("X-Frame-Options", "DENY");
+	context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';");
+	await next();
+});
 
 // Apply migrations at startup
 using (var scope = app.Services.CreateScope())

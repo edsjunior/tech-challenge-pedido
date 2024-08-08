@@ -14,9 +14,10 @@ namespace G64.PedidoAPI.Controllers
 		private readonly PedidoService _service;
 		private readonly PagamentoService _pagamentoService;
 
-		public PedidoController(PedidoService service)
+		public PedidoController(PedidoService service, PagamentoService pagamentoService)
 		{
 			_service = service;
+			_pagamentoService = pagamentoService;
 		}
 
 		// GET: api/pedidos
@@ -52,24 +53,42 @@ namespace G64.PedidoAPI.Controllers
 		[HttpPost]
 		public async Task<ActionResult<PedidoDTO>> Create([FromBody] PedidoDTO pedidoDTO)
 		{
+			pedidoDTO.statusPagamento = PagamentoStatus.PENDENTE.ToString();
 			var createdPedido = await _service.CreatePedidoAsync(pedidoDTO);
 
-			// Cria a solicitação de pagamento
+			var items = createdPedido.items.Select(item => new ItemPedidoDTO
+			{
+				uuid = item.uuid,
+				categoria = item.categoria,
+				titulo = item.titulo,
+				descricao = item.descricao,
+				quantidade = item.quantidade,
+				valorPorUnidade = item.valorPorUnidade
+			}).ToList();
+
+			// Criar o objeto de requisição para o pagamento
 			var pagamentoRequest = new PagamentoRequestDTO
 			{
-				MetodoPagamento = pedidoDTO.MetodoPagamento,
-				Valor = createdPedido.Total,
-				NumeroPedido = createdPedido.Id.ToString()
+				pedidoId = createdPedido.pedidoId.ToString(),
+				valorTotal = createdPedido.valorTotal,
+				items = items
 			};
+
 
 			// Faz a chamada à API de pagamento
 			var pagamentoResponse = await _pagamentoService.CriaPagamentoAsync(pagamentoRequest);
 
+			// Verifique a resposta do pagamento e manipule o resultado conforme necessário
+			if (pagamentoResponse == null)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, "Falha ao processar o pagamento");
+			}
+
 			// Atualiza o pedido com informações de pagamento
-			createdPedido.Status = pagamentoResponse.Status;
+			createdPedido.statusPagamento = pagamentoResponse.status;
 			await _service.UpdatePedidoAsync(createdPedido);
 
-			return CreatedAtAction(nameof(GetById), new { id = createdPedido.Id }, createdPedido);
+			return CreatedAtAction(nameof(GetById), new { id = createdPedido.pedidoId }, createdPedido);
 		}
 
 
@@ -101,7 +120,7 @@ namespace G64.PedidoAPI.Controllers
 				return NotFound();
 			}
 
-			pedido.Status = PedidoStatus.CANCELADO;
+			pedido.status = PedidoStatus.CANCELADO.ToString();
 			await _service.UpdatePedidoAsync(pedido);
 
 			return Ok(pedido);
@@ -118,7 +137,7 @@ namespace G64.PedidoAPI.Controllers
 				return NotFound();
 			}
 
-			pedido.Status = PedidoStatus.PREPARANDO;
+			pedido.status = PedidoStatus.PREPARANDO.ToString();
 			await _service.UpdatePedidoAsync(pedido);
 
 			return Ok(pedido);
@@ -135,7 +154,7 @@ namespace G64.PedidoAPI.Controllers
 				return NotFound();
 			}
 
-			pedido.Status = PedidoStatus.CONCLUIDO;
+			pedido.status = PedidoStatus.CONCLUIDO.ToString();
 			await _service.UpdatePedidoAsync(pedido);
 
 			return Ok(pedido);
@@ -152,7 +171,7 @@ namespace G64.PedidoAPI.Controllers
 				return NotFound();
 			}
 
-			pedido.Status = PedidoStatus.ENTREGUE;
+			pedido.status = PedidoStatus.ENTREGUE.ToString();
 			await _service.UpdatePedidoAsync(pedido);
 
 			return Ok(pedido);

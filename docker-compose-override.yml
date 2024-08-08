@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  pedido-service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "8085:80"
+    volumes:
+      - ./G64.PedidoAPI:/app
+      - ${HOME}/.vsdbg:/remote_debugger:rw
+    command: >
+      /bin/bash -c "while [ ! -f /app/bin/Debug/net6.0/G64.PedidoAPI.dll ]; do sleep 1; done; 
+      tail -f /dev/null"

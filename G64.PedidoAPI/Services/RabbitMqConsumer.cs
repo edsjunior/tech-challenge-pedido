@@ -26,13 +26,13 @@ namespace G64.PedidoAPI.Services
             var factory = new ConnectionFactory
             {
                 HostName = "rabbitmq", // Nome do host do RabbitMQ no Docker Compose
-                UserName = "user",     // Usuário do RabbitMQ
-                Password = "password"  // Senha do RabbitMQ
+                UserName = "guest",     // Usuário do RabbitMQ
+                Password = "guest"  // Senha do RabbitMQ
             };
 
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare(queue: "pagamentos", durable: true, exclusive: false, autoDelete: false, arguments: null);
+            _channel.QueueDeclare(queue: "pagamentoQueue", durable: true, exclusive: false, autoDelete: false, arguments: null);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -47,28 +47,36 @@ namespace G64.PedidoAPI.Services
                 await ProcessPaymentMessageAsync(message);
             };
 
-            _channel.BasicConsume(queue: "pagamentos", autoAck: true, consumer: consumer);
+            _channel.BasicConsume(queue: "pagamentoQueue", autoAck: true, consumer: consumer);
 
             return Task.CompletedTask;
         }
 
         private async Task ProcessPaymentMessageAsync(string message)
         {
-            // Deserializar a mensagem de pagamento
-            var pagamentoDto = JsonConvert.DeserializeObject<PagamentoDTO>(message);
+			
+			// Deserializar a mensagem de pagamento
+			var pagamentoResponseDto = JsonConvert.DeserializeObject<PagamentoResponseDTO>(message);
 
             using (var scope = _serviceProvider.CreateScope())
             {
                 var pedidoService = scope.ServiceProvider.GetRequiredService<PedidoService>();
-                var pedido = await pedidoService.GetPedidoByIdAsync(pagamentoDto.PedidoId);
-
-                if (pedido != null)
+                if(pagamentoResponseDto.pedidoId != null)
                 {
-                    // Atualizar status do pedido para "PREPARANDO"
-                    pedido.Status = PedidoStatus.PREPARANDO;
-                    pedido.MetodoPagamento = pagamentoDto.MetodoPagamento;
-                    await pedidoService.UpdatePedidoAsync(pedido);
-                }
+					var pedido = await pedidoService.GetPedidoByIdAsync(Guid.Parse(pagamentoResponseDto.pedidoId));
+
+					if (pedido != null)
+					{
+						// Atualizar status do pedido para "PREPARANDO"
+						pedido.statusPagamento = pagamentoResponseDto.status;
+						if (pedido.statusPagamento == PagamentoStatus.APROVADO.ToString())
+							pedido.status = PedidoStatus.PREPARANDO.ToString();
+						else
+							pedido.status = PedidoStatus.CANCELADO.ToString();
+
+						await pedidoService.UpdatePedidoAsync(pedido);
+					}
+				}
             }
         }
 

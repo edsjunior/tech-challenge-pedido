@@ -11,8 +11,8 @@
     networks:
       - tech-challenge-fiap
     environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
   db:
     image: 'postgres:latest'
     environment:

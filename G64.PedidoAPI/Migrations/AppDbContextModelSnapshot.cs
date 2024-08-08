@@ -24,97 +24,114 @@ namespace G64.PedidoAPI.Migrations
 
             modelBuilder.Entity("G64.PedidoAPI.Models.ItemPedido", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("uuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Descricao")
+                    b.Property<string>("categoria")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("descricao")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<decimal>("PrecoUnitario")
+                    b.Property<int>("quantidade")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("titulo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("valorPorUnidade")
                         .HasPrecision(12, 2)
                         .HasColumnType("numeric(12,2)");
 
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
+                    b.HasKey("uuid");
 
                     b.ToTable("ItensPedidos");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2d80516f-5b64-418f-9d31-b6bcd82915db"),
-                            Descricao = "Combo Whopper",
-                            PrecoUnitario = 15.99m,
-                            Quantidade = 1
+                            uuid = new Guid("69d69f8b-d34e-4134-9169-1380a0bbd6a6"),
+                            categoria = "Lanche",
+                            descricao = "Combo Whopper",
+                            quantidade = 1,
+                            titulo = "Whopper",
+                            valorPorUnidade = 15.99m
                         },
                         new
                         {
-                            Id = new Guid("28147948-e6b8-4353-b918-30a99f4783a8"),
-                            Descricao = "Coca-cola",
-                            PrecoUnitario = 5.99m,
-                            Quantidade = 1
+                            uuid = new Guid("f8bf4fe4-1285-4a76-be05-6f3ce4e4f10d"),
+                            categoria = "Bebida",
+                            descricao = "Coca-cola",
+                            quantidade = 1,
+                            titulo = "Refrigerante",
+                            valorPorUnidade = 5.99m
                         },
                         new
                         {
-                            Id = new Guid("42dcbb5f-7a47-46eb-9ee5-7e95ce74d580"),
-                            Descricao = "Batata Frita",
-                            PrecoUnitario = 7.99m,
-                            Quantidade = 1
+                            uuid = new Guid("135d1439-b2b8-4010-926b-413cb8f638de"),
+                            categoria = "Acompanhamento",
+                            descricao = "Batata Frita",
+                            quantidade = 1,
+                            titulo = "Fritas",
+                            valorPorUnidade = 7.99m
                         },
                         new
                         {
-                            Id = new Guid("7bf1630e-b05e-49a9-9a5d-781a9bb586b2"),
-                            Descricao = "Sorvete",
-                            PrecoUnitario = 9.99m,
-                            Quantidade = 2
+                            uuid = new Guid("14823eaa-1181-4495-a061-cda21898d89d"),
+                            categoria = "Sobremesa",
+                            descricao = "Sorvete de flocos",
+                            quantidade = 2,
+                            titulo = "Sorvete",
+                            valorPorUnidade = 9.99m
                         });
                 });
 
             modelBuilder.Entity("G64.PedidoAPI.Models.Pedido", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("pedidoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Data")
+                    b.Property<DateTime>("data")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("MetodoPagamento")
+                    b.Property<string>("status")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("statusPagamento")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<decimal>("Total")
+                    b.Property<decimal>("valorTotal")
                         .HasPrecision(12, 2)
                         .HasColumnType("numeric(12,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("pedidoId");
 
                     b.ToTable("Pedidos");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"),
-                            Data = new DateTime(2024, 8, 6, 0, 59, 32, 930, DateTimeKind.Utc).AddTicks(2238),
-                            MetodoPagamento = "PENDENTE",
-                            Status = 0,
-                            Total = 29.97m
+                            pedidoId = new Guid("e69b4050-2153-423a-bdce-6afe5146af21"),
+                            data = new DateTime(2024, 8, 7, 1, 27, 48, 242, DateTimeKind.Utc).AddTicks(456),
+                            status = "PENDENTE",
+                            statusPagamento = "PENDENTE",
+                            valorTotal = 29.97m
                         },
                         new
                         {
-                            Id = new Guid("fa288cff-f2a6-4311-9025-3fe4404c02f9"),
-                            Data = new DateTime(2024, 8, 6, 0, 59, 32, 930, DateTimeKind.Utc).AddTicks(2252),
-                            MetodoPagamento = "PENDENTE",
-                            Status = 0,
-                            Total = 19.98m
+                            pedidoId = new Guid("c85d425e-492a-4331-875f-fb31f067002f"),
+                            data = new DateTime(2024, 8, 7, 1, 27, 48, 242, DateTimeKind.Utc).AddTicks(493),
+                            status = "PENDENTE",
+                            statusPagamento = "PENDENTE",
+                            valorTotal = 19.98m
                         });
                 });
 
@@ -135,23 +152,23 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            PedidosId = new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"),
-                            ItemPedidosId = new Guid("2d80516f-5b64-418f-9d31-b6bcd82915db")
+                            PedidosId = new Guid("e69b4050-2153-423a-bdce-6afe5146af21"),
+                            ItemPedidosId = new Guid("69d69f8b-d34e-4134-9169-1380a0bbd6a6")
                         },
                         new
                         {
-                            PedidosId = new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"),
-                            ItemPedidosId = new Guid("28147948-e6b8-4353-b918-30a99f4783a8")
+                            PedidosId = new Guid("e69b4050-2153-423a-bdce-6afe5146af21"),
+                            ItemPedidosId = new Guid("f8bf4fe4-1285-4a76-be05-6f3ce4e4f10d")
                         },
                         new
                         {
-                            PedidosId = new Guid("76b145ce-8d29-4c54-8bf3-10ca30684c2d"),
-                            ItemPedidosId = new Guid("42dcbb5f-7a47-46eb-9ee5-7e95ce74d580")
+                            PedidosId = new Guid("e69b4050-2153-423a-bdce-6afe5146af21"),
+                            ItemPedidosId = new Guid("135d1439-b2b8-4010-926b-413cb8f638de")
                         },
                         new
                         {
-                            PedidosId = new Guid("fa288cff-f2a6-4311-9025-3fe4404c02f9"),
-                            ItemPedidosId = new Guid("7bf1630e-b05e-49a9-9a5d-781a9bb586b2")
+                            PedidosId = new Guid("c85d425e-492a-4331-875f-fb31f067002f"),
+                            ItemPedidosId = new Guid("14823eaa-1181-4495-a061-cda21898d89d")
                         });
                 });
 

@@ -32,6 +32,7 @@ namespace G64.PedidoAPI.Services
 
             // Ler e desserializar a resposta JSON
             var jsonResponse = await response.Content.ReadAsStringAsync();
+
             return JsonSerializer.Deserialize<PagamentoResponse>(jsonResponse);
         }
     }
