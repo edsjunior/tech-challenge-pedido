@@ -48,14 +48,14 @@ namespace G64.PedidoAPI.Tests.StepDefinitions
 		{
 			_pedidoDto = new PedidoDTO
 			{
-				Data = DateTime.Now,
-				Total = 100,
-				Itens = new List<ItemPedidoDTO>
+				data = DateTime.Now,
+				valorTotal = 100,
+				items = new List<ItemPedidoDTO>
 				{
-					new ItemPedidoDTO { Descricao = "Item 1", Quantidade = 2, PrecoUnitario = 25 },
-					new ItemPedidoDTO { Descricao = "Item 2", Quantidade = 3, PrecoUnitario = 10 }
+					new ItemPedidoDTO { descricao = "Item 1", quantidade = 2, valorPorUnidade = 25 },
+					new ItemPedidoDTO { descricao = "Item 2", quantidade = 3, valorPorUnidade = 10 }
 				},
-				Status = PedidoStatus.PENDENTE
+				status = PedidoStatus.PENDENTE.ToString()
 			};
 
 		}
@@ -74,7 +74,7 @@ namespace G64.PedidoAPI.Tests.StepDefinitions
 			Assert.NotNull(createdResult);
 			var createdPedido = createdResult.Value as PedidoDTO;
 			Assert.NotNull(createdPedido);
-			Assert.Equal(_pedidoDto.Total, createdPedido.Total);
+			Assert.Equal(_pedidoDto.valorTotal, createdPedido.valorTotal);
 		}
 	}
 }

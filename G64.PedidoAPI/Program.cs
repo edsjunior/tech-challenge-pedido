@@ -14,7 +14,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 		options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<PedidoService>();
+builder.Services.AddScoped<PagamentoService>();
+builder.Services.AddScoped<ClienteService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -48,7 +52,19 @@ if (app.Environment.IsDevelopment())
 	//app.UseHttpsRedirection();
 }
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+	c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tech challenge");
+	// Adiciona o hash para permitir estilos inline específicos do Swagger
+	c.InjectStylesheet("/swagger-ui/custom.css");
+});
+app.Use(async (context, next) =>
+{
+	context.Response.Headers.Add("X-Frame-Options", "DENY");
+	context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self' https://trustedscripts.example.com; object-src 'none';");
+	await next();
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -10,6 +10,7 @@ namespace G64.PedidoAPI.DTOs.Mappings
 		{
 			CreateMap<Pedido, PedidoDTO>().ReverseMap();
 			CreateMap<ItemPedido, ItemPedidoDTO>().ReverseMap();
+			CreateMap<Cliente, ClienteDTO>().ReverseMap();
 		}
 	}
 }

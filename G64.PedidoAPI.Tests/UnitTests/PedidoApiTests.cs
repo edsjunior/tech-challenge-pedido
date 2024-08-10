@@ -64,13 +64,13 @@ public class PedidoApiTests
 		// Arrange
 		await _pedidoService.CreatePedidoAsync(new PedidoDTO
 		{
-			Data = DateTime.Now,
-			Total = 100,
-			Itens = new List<ItemPedidoDTO>
+			data = DateTime.Now,
+			valorTotal = 100,
+			items = new List<ItemPedidoDTO>
 		{
-			new ItemPedidoDTO { Descricao = "Item 1", Quantidade = 2, PrecoUnitario = 25 }
+			new ItemPedidoDTO { descricao = "Item 1", quantidade = 2, valorPorUnidade = 25 }
 		},
-			Status = PedidoStatus.PENDENTE
+			status = PedidoStatus.PENDENTE.ToString()
 		});
 
 		// Act
@@ -87,21 +87,21 @@ public class PedidoApiTests
 		// Arrange
 		var createdPedido = await _pedidoService.CreatePedidoAsync(new PedidoDTO
 		{
-			Data = DateTime.Now,
-			Total = 100,
-			Itens = new List<ItemPedidoDTO>
+			data = DateTime.Now,
+			valorTotal = 100,
+			items = new List<ItemPedidoDTO>
 		{
-			new ItemPedidoDTO { Descricao = "Item 1", Quantidade = 2, PrecoUnitario = 25 }
+			new ItemPedidoDTO { descricao = "Item 1", quantidade = 2, valorPorUnidade = 25 }
 		},
-			Status = PedidoStatus.PENDENTE
-		});
+			status = PedidoStatus.PENDENTE.ToString()
+		}); ;
 
 		// Act
-		var result = await _pedidoService.GetPedidoByIdAsync(createdPedido.Id);
+		var result = await _pedidoService.GetPedidoByIdAsync(createdPedido.pedidoId);
 
 		// Assert
 		Assert.NotNull(result);
-		Assert.Equal(createdPedido.Id, result.Id);
+		Assert.Equal(createdPedido.pedidoId, result.pedidoId);
 		ClearDatabase();
 	}
 
@@ -115,7 +115,7 @@ public class PedidoApiTests
 	//		Total = 100,
 	//		Itens = new List<ItemPedidoDTO>
 	//	{
-	//		new ItemPedidoDTO { Descricao = "Item 1", Quantidade = 2, PrecoUnitario = 25 }
+	//		new ItemPedidoDTO { Descricao = "Item 1", Quantidade = 2, ValorPorUnidade = 25 }
 	//	},
 	//		Status = PedidoStatus.PENDENTE
 	//	});

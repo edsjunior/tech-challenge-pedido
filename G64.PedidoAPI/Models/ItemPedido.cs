@@ -2,11 +2,13 @@
 {
 	public class ItemPedido
 	{
-		public Guid Id { get; set; }
-		public string Descricao { get; set; }
-		public int Quantidade { get; set; }
-		public decimal PrecoUnitario { get; set; }
+		public Guid uuid { get; set; }
+		public string titulo { get; set; }
+		public string categoria { get; set; }
+		public string descricao { get; set; }
+		public int quantidade { get; set; }
+		public decimal valorPorUnidade { get; set; }
 
-        public List<Pedido> Pedidos { get; set; }
-    }
+		public List<Pedido> Pedidos { get; set; }
+	}
 }
