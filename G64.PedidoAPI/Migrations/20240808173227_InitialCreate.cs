@@ -10,6 +10,20 @@ namespace G64.PedidoAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Clientes",
+                columns: table => new
+                {
+                    ClienteId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Nome = table.Column<string>(type: "text", nullable: false),
+                    Endereco = table.Column<string>(type: "text", nullable: false),
+                    Telefone = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clientes", x => x.ClienteId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ItensPedidos",
                 columns: table => new
                 {
@@ -69,10 +83,10 @@ namespace G64.PedidoAPI.Migrations
                 columns: new[] { "uuid", "categoria", "descricao", "quantidade", "titulo", "valorPorUnidade" },
                 values: new object[,]
                 {
-                    { new Guid("135d1439-b2b8-4010-926b-413cb8f638de"), "Acompanhamento", "Batata Frita", 1, "Fritas", 7.99m },
-                    { new Guid("14823eaa-1181-4495-a061-cda21898d89d"), "Sobremesa", "Sorvete de flocos", 2, "Sorvete", 9.99m },
-                    { new Guid("69d69f8b-d34e-4134-9169-1380a0bbd6a6"), "Lanche", "Combo Whopper", 1, "Whopper", 15.99m },
-                    { new Guid("f8bf4fe4-1285-4a76-be05-6f3ce4e4f10d"), "Bebida", "Coca-cola", 1, "Refrigerante", 5.99m }
+                    { new Guid("68742585-ef87-445d-b2e1-1b249fecbccb"), "Lanche", "Combo Whopper", 1, "Whopper", 15.99m },
+                    { new Guid("93e1bb7b-088b-4e99-bba3-d04e38ea904a"), "Bebida", "Coca-cola", 1, "Refrigerante", 5.99m },
+                    { new Guid("a4678ce5-d08d-4501-88cb-e2572cfd10e1"), "Acompanhamento", "Batata Frita", 1, "Fritas", 7.99m },
+                    { new Guid("f0251552-0692-4e58-925c-b0bdaa2418ad"), "Sobremesa", "Sorvete de flocos", 2, "Sorvete", 9.99m }
                 });
 
             migrationBuilder.InsertData(
@@ -80,8 +94,8 @@ namespace G64.PedidoAPI.Migrations
                 columns: new[] { "pedidoId", "data", "status", "statusPagamento", "valorTotal" },
                 values: new object[,]
                 {
-                    { new Guid("c85d425e-492a-4331-875f-fb31f067002f"), new DateTime(2024, 8, 7, 1, 27, 48, 242, DateTimeKind.Utc).AddTicks(493), "PENDENTE", "PENDENTE", 19.98m },
-                    { new Guid("e69b4050-2153-423a-bdce-6afe5146af21"), new DateTime(2024, 8, 7, 1, 27, 48, 242, DateTimeKind.Utc).AddTicks(456), "PENDENTE", "PENDENTE", 29.97m }
+                    { new Guid("1ecf9905-59fe-4284-940a-720eceb220a6"), new DateTime(2024, 8, 8, 14, 32, 27, 169, DateTimeKind.Utc).AddTicks(8579), "PENDENTE", "PENDENTE", 29.97m },
+                    { new Guid("254e95d0-a295-45fd-a515-61936c284fa4"), new DateTime(2024, 8, 8, 14, 32, 27, 169, DateTimeKind.Utc).AddTicks(8628), "PENDENTE", "PENDENTE", 19.98m }
                 });
 
             migrationBuilder.InsertData(
@@ -89,10 +103,10 @@ namespace G64.PedidoAPI.Migrations
                 columns: new[] { "ItemPedidosId", "PedidosId" },
                 values: new object[,]
                 {
-                    { new Guid("14823eaa-1181-4495-a061-cda21898d89d"), new Guid("c85d425e-492a-4331-875f-fb31f067002f") },
-                    { new Guid("135d1439-b2b8-4010-926b-413cb8f638de"), new Guid("e69b4050-2153-423a-bdce-6afe5146af21") },
-                    { new Guid("69d69f8b-d34e-4134-9169-1380a0bbd6a6"), new Guid("e69b4050-2153-423a-bdce-6afe5146af21") },
-                    { new Guid("f8bf4fe4-1285-4a76-be05-6f3ce4e4f10d"), new Guid("e69b4050-2153-423a-bdce-6afe5146af21") }
+                    { new Guid("68742585-ef87-445d-b2e1-1b249fecbccb"), new Guid("1ecf9905-59fe-4284-940a-720eceb220a6") },
+                    { new Guid("93e1bb7b-088b-4e99-bba3-d04e38ea904a"), new Guid("1ecf9905-59fe-4284-940a-720eceb220a6") },
+                    { new Guid("a4678ce5-d08d-4501-88cb-e2572cfd10e1"), new Guid("1ecf9905-59fe-4284-940a-720eceb220a6") },
+                    { new Guid("f0251552-0692-4e58-925c-b0bdaa2418ad"), new Guid("254e95d0-a295-45fd-a515-61936c284fa4") }
                 });
 
             migrationBuilder.CreateIndex(
@@ -103,6 +117,9 @@ namespace G64.PedidoAPI.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Clientes");
+
             migrationBuilder.DropTable(
                 name: "PedidoItemPedido");
 

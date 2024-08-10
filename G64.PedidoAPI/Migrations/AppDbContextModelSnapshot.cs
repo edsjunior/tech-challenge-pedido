@@ -22,6 +22,29 @@ namespace G64.PedidoAPI.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("G64.PedidoAPI.Models.Cliente", b =>
+                {
+                    b.Property<Guid>("ClienteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ClienteId");
+
+                    b.ToTable("Clientes");
+                });
+
             modelBuilder.Entity("G64.PedidoAPI.Models.ItemPedido", b =>
                 {
                     b.Property<Guid>("uuid")
@@ -55,7 +78,7 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            uuid = new Guid("69d69f8b-d34e-4134-9169-1380a0bbd6a6"),
+                            uuid = new Guid("68742585-ef87-445d-b2e1-1b249fecbccb"),
                             categoria = "Lanche",
                             descricao = "Combo Whopper",
                             quantidade = 1,
@@ -64,7 +87,7 @@ namespace G64.PedidoAPI.Migrations
                         },
                         new
                         {
-                            uuid = new Guid("f8bf4fe4-1285-4a76-be05-6f3ce4e4f10d"),
+                            uuid = new Guid("93e1bb7b-088b-4e99-bba3-d04e38ea904a"),
                             categoria = "Bebida",
                             descricao = "Coca-cola",
                             quantidade = 1,
@@ -73,7 +96,7 @@ namespace G64.PedidoAPI.Migrations
                         },
                         new
                         {
-                            uuid = new Guid("135d1439-b2b8-4010-926b-413cb8f638de"),
+                            uuid = new Guid("a4678ce5-d08d-4501-88cb-e2572cfd10e1"),
                             categoria = "Acompanhamento",
                             descricao = "Batata Frita",
                             quantidade = 1,
@@ -82,7 +105,7 @@ namespace G64.PedidoAPI.Migrations
                         },
                         new
                         {
-                            uuid = new Guid("14823eaa-1181-4495-a061-cda21898d89d"),
+                            uuid = new Guid("f0251552-0692-4e58-925c-b0bdaa2418ad"),
                             categoria = "Sobremesa",
                             descricao = "Sorvete de flocos",
                             quantidade = 2,
@@ -119,16 +142,16 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            pedidoId = new Guid("e69b4050-2153-423a-bdce-6afe5146af21"),
-                            data = new DateTime(2024, 8, 7, 1, 27, 48, 242, DateTimeKind.Utc).AddTicks(456),
+                            pedidoId = new Guid("1ecf9905-59fe-4284-940a-720eceb220a6"),
+                            data = new DateTime(2024, 8, 8, 14, 32, 27, 169, DateTimeKind.Utc).AddTicks(8579),
                             status = "PENDENTE",
                             statusPagamento = "PENDENTE",
                             valorTotal = 29.97m
                         },
                         new
                         {
-                            pedidoId = new Guid("c85d425e-492a-4331-875f-fb31f067002f"),
-                            data = new DateTime(2024, 8, 7, 1, 27, 48, 242, DateTimeKind.Utc).AddTicks(493),
+                            pedidoId = new Guid("254e95d0-a295-45fd-a515-61936c284fa4"),
+                            data = new DateTime(2024, 8, 8, 14, 32, 27, 169, DateTimeKind.Utc).AddTicks(8628),
                             status = "PENDENTE",
                             statusPagamento = "PENDENTE",
                             valorTotal = 19.98m
@@ -152,23 +175,23 @@ namespace G64.PedidoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            PedidosId = new Guid("e69b4050-2153-423a-bdce-6afe5146af21"),
-                            ItemPedidosId = new Guid("69d69f8b-d34e-4134-9169-1380a0bbd6a6")
+                            PedidosId = new Guid("1ecf9905-59fe-4284-940a-720eceb220a6"),
+                            ItemPedidosId = new Guid("68742585-ef87-445d-b2e1-1b249fecbccb")
                         },
                         new
                         {
-                            PedidosId = new Guid("e69b4050-2153-423a-bdce-6afe5146af21"),
-                            ItemPedidosId = new Guid("f8bf4fe4-1285-4a76-be05-6f3ce4e4f10d")
+                            PedidosId = new Guid("1ecf9905-59fe-4284-940a-720eceb220a6"),
+                            ItemPedidosId = new Guid("93e1bb7b-088b-4e99-bba3-d04e38ea904a")
                         },
                         new
                         {
-                            PedidosId = new Guid("e69b4050-2153-423a-bdce-6afe5146af21"),
-                            ItemPedidosId = new Guid("135d1439-b2b8-4010-926b-413cb8f638de")
+                            PedidosId = new Guid("1ecf9905-59fe-4284-940a-720eceb220a6"),
+                            ItemPedidosId = new Guid("a4678ce5-d08d-4501-88cb-e2572cfd10e1")
                         },
                         new
                         {
-                            PedidosId = new Guid("c85d425e-492a-4331-875f-fb31f067002f"),
-                            ItemPedidosId = new Guid("14823eaa-1181-4495-a061-cda21898d89d")
+                            PedidosId = new Guid("254e95d0-a295-45fd-a515-61936c284fa4"),
+                            ItemPedidosId = new Guid("f0251552-0692-4e58-925c-b0bdaa2418ad")
                         });
                 });
 

@@ -9,6 +9,7 @@ namespace G64.PedidoAPI.Context
 
 		public DbSet<Pedido> Pedidos { get; set; }
 		public DbSet<ItemPedido> ItensPedidos { get; set; }
+		public DbSet<Cliente> Clientes { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
