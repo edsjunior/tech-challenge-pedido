@@ -39,12 +39,5 @@ Este repositório contém o código do serviço de pedidos para o Tech Challenge
    docker-compose up
    ```
 
-   A API estará disponível em `http://localhost:8080/swagger/index.html`.
+   A API estará disponível em `http://localhost:8085/swagger/index.html`.
 
-## Testes
-
-Para executar os testes, use o comando:
-
-```bash
-dotnet test
-```
